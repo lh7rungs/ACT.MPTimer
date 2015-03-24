@@ -108,7 +108,7 @@
             // MP監視タイマを開始する
             this.MPWatchTimer = new DispatcherTimer()
             {
-                Interval = new TimeSpan(0, 0, 0, 0, 50),
+                Interval = new TimeSpan(0, 0, 0, 0, Settings.Default.OverlayRefreshRate),
             };
 
             this.MPWatchTimer.Tick += this.MPWatchTimer_Tick;
@@ -168,7 +168,7 @@
                 this.DrawRecastTimer();
 
                 // 監視間隔を短くする
-                this.MPWatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+                this.MPWatchTimer.Interval = new TimeSpan(0, 0, 0, 0, Settings.Default.OverlayRefreshRate);
             }
             catch (Exception ex)
             {

@@ -1,7 +1,6 @@
 ﻿namespace ACT.MPTimer
 {
     using System;
-    using System.Drawing;
     using System.Windows.Forms;
 
     using ACT.MPTimer.Properties;
@@ -93,6 +92,9 @@
             this.CountInCombatNumericUpDown.Value = Settings.Default.CountInCombatSpan;
             this.TargetJobComboBox.SelectedValue = Settings.Default.TargetJobId;
             this.ClickThroughCheckBox.Checked = Settings.Default.ClickThrough;
+
+            this.OverlayRefreshRateNumericUpDown.Value = Settings.Default.OverlayRefreshRate;
+            this.MPRefreshRateNumericUpDown.Value = Settings.Default.ParameterRefreshRate;
         }
 
         /// <summary>
@@ -113,6 +115,9 @@
             Settings.Default.CountInCombatSpan = (int)this.CountInCombatNumericUpDown.Value;
             Settings.Default.TargetJobId = (int)this.TargetJobComboBox.SelectedValue;
             Settings.Default.ClickThrough = this.ClickThroughCheckBox.Checked;
+
+            Settings.Default.OverlayRefreshRate = (int)this.OverlayRefreshRateNumericUpDown.Value;
+            Settings.Default.ParameterRefreshRate = (int)this.MPRefreshRateNumericUpDown.Value;
 
             Settings.Default.Save();
         }

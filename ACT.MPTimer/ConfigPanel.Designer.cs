@@ -44,9 +44,17 @@
             this.label9 = new System.Windows.Forms.Label();
             this.ClickThroughCheckBox = new System.Windows.Forms.CheckBox();
             this.TekiyoButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.OverlayRefreshRateNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.MPRefreshRateNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
             this.VisualSetting = new ACT.MPTimer.VisualSettingControl();
             ((System.ComponentModel.ISupportInitialize)(this.TokaRitsuNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CountInCombatNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OverlayRefreshRateNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MPRefreshRateNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // label4
@@ -88,7 +96,7 @@
             // 
             // ShokikaButton
             // 
-            this.ShokikaButton.Location = new System.Drawing.Point(5, 264);
+            this.ShokikaButton.Location = new System.Drawing.Point(5, 286);
             this.ShokikaButton.Name = "ShokikaButton";
             this.ShokikaButton.Size = new System.Drawing.Size(68, 23);
             this.ShokikaButton.TabIndex = 10;
@@ -176,12 +184,96 @@
             // 
             // TekiyoButton
             // 
-            this.TekiyoButton.Location = new System.Drawing.Point(401, 264);
+            this.TekiyoButton.Location = new System.Drawing.Point(401, 286);
             this.TekiyoButton.Name = "TekiyoButton";
             this.TekiyoButton.Size = new System.Drawing.Size(68, 23);
             this.TekiyoButton.TabIndex = 22;
             this.TekiyoButton.Text = "適用";
             this.TekiyoButton.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 222);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(120, 12);
+            this.label1.TabIndex = 23;
+            this.label1.Text = "オーバーレイの描画間隔";
+            // 
+            // OverlayRefreshRateNumericUpDown
+            // 
+            this.OverlayRefreshRateNumericUpDown.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.OverlayRefreshRateNumericUpDown.Location = new System.Drawing.Point(163, 219);
+            this.OverlayRefreshRateNumericUpDown.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.OverlayRefreshRateNumericUpDown.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.OverlayRefreshRateNumericUpDown.Name = "OverlayRefreshRateNumericUpDown";
+            this.OverlayRefreshRateNumericUpDown.Size = new System.Drawing.Size(63, 19);
+            this.OverlayRefreshRateNumericUpDown.TabIndex = 24;
+            this.OverlayRefreshRateNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OverlayRefreshRateNumericUpDown.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(232, 222);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(20, 12);
+            this.label2.TabIndex = 25;
+            this.label2.Text = "ms";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(232, 247);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(20, 12);
+            this.label3.TabIndex = 28;
+            this.label3.Text = "ms";
+            // 
+            // MPRefreshRateNumericUpDown
+            // 
+            this.MPRefreshRateNumericUpDown.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.MPRefreshRateNumericUpDown.Location = new System.Drawing.Point(163, 244);
+            this.MPRefreshRateNumericUpDown.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.MPRefreshRateNumericUpDown.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.MPRefreshRateNumericUpDown.Name = "MPRefreshRateNumericUpDown";
+            this.MPRefreshRateNumericUpDown.Size = new System.Drawing.Size(63, 19);
+            this.MPRefreshRateNumericUpDown.TabIndex = 27;
+            this.MPRefreshRateNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.MPRefreshRateNumericUpDown.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(3, 248);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(79, 12);
+            this.label10.TabIndex = 26;
+            this.label10.Text = "MPの監視間隔";
             // 
             // VisualSetting
             // 
@@ -201,6 +293,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.MPRefreshRateNumericUpDown);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.OverlayRefreshRateNumericUpDown);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.TekiyoButton);
             this.Controls.Add(this.VisualSetting);
             this.Controls.Add(this.ClickThroughCheckBox);
@@ -216,10 +314,12 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Name = "ConfigPanel";
-            this.Size = new System.Drawing.Size(483, 296);
+            this.Size = new System.Drawing.Size(483, 323);
             this.Load += new System.EventHandler(this.ConfigPanel_Load);
             ((System.ComponentModel.ISupportInitialize)(this.TokaRitsuNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CountInCombatNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OverlayRefreshRateNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MPRefreshRateNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -243,5 +343,11 @@
         private System.Windows.Forms.CheckBox ClickThroughCheckBox;
         private VisualSettingControl VisualSetting;
         private System.Windows.Forms.Button TekiyoButton;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown OverlayRefreshRateNumericUpDown;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown MPRefreshRateNumericUpDown;
+        private System.Windows.Forms.Label label10;
     }
 }

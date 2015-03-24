@@ -225,6 +225,11 @@
 
     public class Combatant
     {
+        public Combatant()
+        {
+            this.Name = string.Empty;
+        }
+
         public uint ID;
         public uint OwnerID;
         public int Order;

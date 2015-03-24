@@ -3,6 +3,7 @@
     using System;
     using System.Timers;
 
+    using ACT.MPTimer.Properties;
     using Advanced_Combat_Tracker;
 
     /// <summary>
@@ -53,7 +54,7 @@
 
                     instance.watchTimer = new Timer()
                     {
-                        Interval = 100,
+                        Interval = Settings.Default.ParameterRefreshRate,
                         AutoReset = false,
                         Enabled = false
                     };
