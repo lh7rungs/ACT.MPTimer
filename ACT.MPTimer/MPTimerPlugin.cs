@@ -1,9 +1,11 @@
 ﻿namespace ACT.MPTimer
 {
     using System;
+    using System.Diagnostics;
     using System.Windows.Forms;
 
     using ACT.MPTimer.Properties;
+    using ACT.MPTimer.Utility;
     using Advanced_Combat_Tracker;
 
     /// <summary>
@@ -31,6 +33,9 @@
         {
             try
             {
+                TraceUtility.Initialize();
+                Trace.WriteLine("InitPlugin begin.");
+
                 pluginScreenSpace.Text = "MPTimer";
 
                 // アップデートを確認する
@@ -43,18 +48,20 @@
                 FF14Watcher.Initialize();
 
                 // 設定Panelを追加する
-                var panel = new ConfigPanel();
-                panel.Dock = DockStyle.Fill;
-                pluginScreenSpace.Controls.Add(panel);
+                pluginScreenSpace.Controls.Add(ConfigPanel.Default);
 
                 this.PluginStatusLabel = pluginStatusText;
                 this.PluginStatusLabel.Text = "Plugin Started";
             }
             catch (Exception ex)
             {
-                ActGlobals.oFormActMain.WriteExceptionLog(
-                    ex,
-                    "ACT.MPTimer プラグインの初期化で例外が発生しました。");
+                Trace.WriteLine(
+                    "ACT.MPTimer プラグインの初期化で例外が発生しました。" + Environment.NewLine +
+                    ex.ToString());
+            }
+            finally
+            {
+                Trace.WriteLine("InitPlugin end.");
             }
         }
 
@@ -63,15 +70,30 @@
         /// </summary>
         void IActPluginV1.DeInitPlugin()
         {
-            // Windowの位置を保存する
-            Settings.Default.OverlayTop = (int)MPTimerWindow.Default.Top;
-            Settings.Default.OverlayLeft = (int)MPTimerWindow.Default.Left;
-            Settings.Default.Save();
+            try
+            {
+                Trace.WriteLine("DeInitPlugin begin.");
 
-            FF14Watcher.Deinitialize();
-            MPTimerWindow.Default.Close();
+                // Windowの位置を保存する
+                Settings.Default.OverlayTop = (int)MPTimerWindow.Default.Top;
+                Settings.Default.OverlayLeft = (int)MPTimerWindow.Default.Left;
+                Settings.Default.Save();
 
-            this.PluginStatusLabel.Text = "Plugin Exited";
+                FF14Watcher.Deinitialize();
+                MPTimerWindow.Default.Close();
+
+                this.PluginStatusLabel.Text = "Plugin Exited";
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(
+                    "ACT.MPTimer プラグインの終了で例外が発生しました。" + Environment.NewLine +
+                    ex.ToString());
+            }
+            finally
+            {
+                Trace.WriteLine("DeInitPlugin end.");
+            }
         }
 
         /// <summary>

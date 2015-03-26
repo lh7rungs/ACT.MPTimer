@@ -1,6 +1,7 @@
 ﻿namespace ACT.MPTimer
 {
     using System;
+    using System.Diagnostics;
     using System.Linq;
 
     using ACT.MPTimer.Properties;
@@ -29,6 +30,8 @@
         /// 直前のMP
         /// </summary>
         private int PreviousMP { get; set; }
+
+        private DateTime lastLoggingDateTime;
 
         /// <summary>
         /// MP回復スパンを監視する
@@ -119,6 +122,30 @@
                     this.LastRecoveryDateTime = now;
                     this.NextRecoveryDateTime = this.LastRecoveryDateTime.AddSeconds(Constants.MPRecoverySpan);
                 }
+
+                #region Logger
+
+                // ログを出力する
+                if ((now - this.lastLoggingDateTime).TotalMinutes >= 30.0d)
+                {
+                    var message = string.Empty;
+
+                    message += "MaxMP " + player.MaxMP.ToString("N0") + Environment.NewLine;
+                    message += "通常回復       : " + mpRecoveryValues[0].ToString("N0") + Environment.NewLine;
+                    message += "通常回復+UB1   : " + mpRecoveryValues[1].ToString("N0") + Environment.NewLine;
+                    message += "通常回復+UB2   : " + mpRecoveryValues[2].ToString("N0") + Environment.NewLine;
+                    message += "通常回復+UB3   : " + mpRecoveryValues[3].ToString("N0") + Environment.NewLine;
+                    message += "戦闘時回復     : " + mpRecoveryValues[4].ToString("N0") + Environment.NewLine;
+                    message += "戦闘時回復+UB1 : " + mpRecoveryValues[5].ToString("N0") + Environment.NewLine;
+                    message += "戦闘時回復+UB2 : " + mpRecoveryValues[6].ToString("N0") + Environment.NewLine;
+                    message += "戦闘時回復+UB3 : " + mpRecoveryValues[7].ToString("N0") + Environment.NewLine;
+                    message += "今回の回復量   : " + (player.CurrentMP - this.PreviousMP).ToString("N0");
+
+                    Trace.WriteLine(message);
+                    this.lastLoggingDateTime = now;
+                }
+
+                #endregion
             }
 
             if (this.NextRecoveryDateTime <= DateTime.MinValue)

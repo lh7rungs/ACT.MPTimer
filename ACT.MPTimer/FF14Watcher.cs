@@ -1,6 +1,7 @@
 ﻿namespace ACT.MPTimer
 {
     using System;
+    using System.Diagnostics;
     using System.Timers;
 
     using ACT.MPTimer.Properties;
@@ -101,9 +102,9 @@
             }
             catch (Exception ex)
             {
-                ActGlobals.oFormActMain.WriteExceptionLog(
-                    ex,
-                    "ACT.MPTimer FF14の監視スレッドで例外が発生しました");
+                Trace.WriteLine(
+                    "ACT.MPTimer FF14の監視スレッドで例外が発生しました" + Environment.NewLine +
+                    ex.ToString());
             }
             finally
             {

@@ -1,21 +1,33 @@
 ﻿namespace ACT.MPTimer
 {
     using System;
+    using System.Diagnostics;
     using System.Windows.Forms;
 
     using ACT.MPTimer.Properties;
+    using ACT.MPTimer.Utility;
 
     /// <summary>
     /// 設定Panel
     /// </summary>
     public partial class ConfigPanel : UserControl
     {
+        private static ConfigPanel instance;
+
+        public static ConfigPanel Default
+        {
+            get { return instance ?? (instance = new ConfigPanel()); }
+        }
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
         public ConfigPanel()
         {
             this.InitializeComponent();
+            this.Dock = DockStyle.Fill;
+
+            TraceUtility.LogTextBox = this.LogRichTextBox;
         }
 
         /// <summary>
@@ -33,27 +45,49 @@
 
             this.TekiyoButton.Click += (s1, e1) =>
             {
-                Settings.Default.OverlayTop = (int)MPTimerWindow.Default.Top;
-                Settings.Default.OverlayLeft = (int)MPTimerWindow.Default.Left;
+                try
+                {
+                    FF14Watcher.Deinitialize();
 
-                this.SaveSettings();
+                    Settings.Default.OverlayTop = (int)MPTimerWindow.Default.Top;
+                    Settings.Default.OverlayLeft = (int)MPTimerWindow.Default.Left;
 
-                MPTimerWindow.Reload();
-                MPTimerWindow.Default.Show();
+                    this.SaveSettings();
+
+                    MPTimerWindow.Reload();
+                    MPTimerWindow.Default.Show();
+
+                    Trace.WriteLine("Change settings.");
+                }
+                finally
+                {
+                    FF14Watcher.Initialize();
+                }
             };
 
             this.ShokikaButton.Click += (s1, e1) =>
             {
-                Settings.Default.Reset();
-                Settings.Default.Save();
+                try
+                {
+                    FF14Watcher.Deinitialize();
 
-                MPTimerWindow.Default.Top = Settings.Default.OverlayTop;
-                MPTimerWindow.Default.Left = Settings.Default.OverlayLeft;
+                    Settings.Default.Reset();
+                    Settings.Default.Save();
 
-                this.LoadSettings();
+                    MPTimerWindow.Default.Top = Settings.Default.OverlayTop;
+                    MPTimerWindow.Default.Left = Settings.Default.OverlayLeft;
 
-                MPTimerWindow.Reload();
-                MPTimerWindow.Default.Show();
+                    this.LoadSettings();
+
+                    MPTimerWindow.Reload();
+                    MPTimerWindow.Default.Show();
+
+                    Trace.WriteLine("Reset settings.");
+                }
+                finally
+                {
+                    FF14Watcher.Initialize();
+                }
             };
         }
 

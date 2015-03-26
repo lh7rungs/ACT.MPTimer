@@ -47,6 +47,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.MPRefreshRateNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
+            this.LogRichTextBox = new System.Windows.Forms.RichTextBox();
             this.VisualSetting = new ACT.MPTimer.VisualSettingControl();
             ((System.ComponentModel.ISupportInitialize)(this.TokaRitsuNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CountInCombatNumericUpDown)).BeginInit();
@@ -229,6 +230,22 @@
             this.label10.TabIndex = 26;
             this.label10.Text = "MPの監視間隔";
             // 
+            // LogRichTextBox
+            // 
+            this.LogRichTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LogRichTextBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.LogRichTextBox.Location = new System.Drawing.Point(5, 337);
+            this.LogRichTextBox.Name = "LogRichTextBox";
+            this.LogRichTextBox.ReadOnly = true;
+            this.LogRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.LogRichTextBox.Size = new System.Drawing.Size(791, 384);
+            this.LogRichTextBox.TabIndex = 29;
+            this.LogRichTextBox.TabStop = false;
+            this.LogRichTextBox.Text = "";
+            this.LogRichTextBox.WordWrap = false;
+            // 
             // VisualSetting
             // 
             this.VisualSetting.BarColor = System.Drawing.Color.OrangeRed;
@@ -264,8 +281,9 @@
             this.Controls.Add(this.TokaRitsuNumericUpDown);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
+            this.Controls.Add(this.LogRichTextBox);
             this.Name = "ConfigPanel";
-            this.Size = new System.Drawing.Size(483, 323);
+            this.Size = new System.Drawing.Size(799, 724);
             this.Load += new System.EventHandler(this.ConfigPanel_Load);
             ((System.ComponentModel.ISupportInitialize)(this.TokaRitsuNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CountInCombatNumericUpDown)).EndInit();
@@ -296,5 +314,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown MPRefreshRateNumericUpDown;
         private System.Windows.Forms.Label label10;
+        public System.Windows.Forms.RichTextBox LogRichTextBox;
     }
 }

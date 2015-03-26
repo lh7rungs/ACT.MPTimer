@@ -1,6 +1,7 @@
 ﻿namespace ACT.MPTimer
 {
     using System;
+    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Threading;
 
@@ -52,7 +53,7 @@
 
                 var timer = new DispatcherTimer()
                 {
-                    Interval = new TimeSpan(0, 0, 0, 0, 250),
+                    Interval = new TimeSpan(0, 0, 0, 3, 0),
                 };
 
                 timer.Tick += (s1, e1) =>
@@ -66,6 +67,8 @@
 
                 timer.Start();
             };
+
+            Trace.WriteLine("New MPTimerOverlay.");
         }
 
         public MPTimerWindowViewModel ViewModel
