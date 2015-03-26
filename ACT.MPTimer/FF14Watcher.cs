@@ -1,6 +1,7 @@
 ﻿namespace ACT.MPTimer
 {
     using System;
+    using System.Diagnostics;
     using System.Timers;
 
     using ACT.MPTimer.Properties;
@@ -12,11 +13,6 @@
     public partial class FF14Watcher
     {
         /// <summary>
-        /// ロックオブジェクト
-        /// </summary>
-        private static object lockObject = new object();
-
-        /// <summary>
         /// シングルトンインスタンス
         /// </summary>
         private static FF14Watcher instance;
@@ -25,6 +21,11 @@
         /// 監視タイマー
         /// </summary>
         private Timer watchTimer;
+
+        /// <summary>
+        /// 処理中か？
+        /// </summary>
+        private bool isWorking;
 
         /// <summary>
         /// シングルトンインスタンス
@@ -43,30 +44,23 @@
         /// </summary>
         public static void Initialize()
         {
-            lock (lockObject)
+            if (instance == null)
             {
-                if (instance == null)
+                instance = new FF14Watcher()
                 {
-                    instance = new FF14Watcher()
-                    {
-                        PreviousMP = -1
-                    };
+                    PreviousMP = -1
+                };
 
-                    instance.watchTimer = new Timer()
-                    {
-                        Interval = Settings.Default.ParameterRefreshRate,
-                        AutoReset = false,
-                        Enabled = false
-                    };
+                instance.watchTimer = new Timer()
+                {
+                    Interval = Settings.Default.ParameterRefreshRate,
+                    Enabled = false
+                };
 
-                    instance.watchTimer.Elapsed += instance.watchTimer_Elapsed;
+                instance.watchTimer.Elapsed += instance.watchTimer_Elapsed;
 
-                    // 監視を開始する
-                    instance.watchTimer.Start();
-
-                    // ログの読み取りをセットする
-                    ActGlobals.oFormActMain.OnLogLineRead += instance.oFormActMain_OnLogLineRead;
-                }
+                // 監視を開始する
+                instance.watchTimer.Start();
             }
         }
 
@@ -75,21 +69,16 @@
         /// </summary>
         public static void Deinitialize()
         {
-            lock (lockObject)
+            if (instance != null)
             {
-                if (instance != null)
+                if (instance.watchTimer != null)
                 {
-                    ActGlobals.oFormActMain.OnLogLineRead -= instance.oFormActMain_OnLogLineRead;
-
-                    if (instance.watchTimer != null)
-                    {
-                        instance.watchTimer.Stop();
-                        instance.watchTimer.Dispose();
-                        instance.watchTimer = null;
-                    }
-
-                    instance = null;
+                    instance.watchTimer.Stop();
+                    instance.watchTimer.Dispose();
+                    instance.watchTimer = null;
                 }
+
+                instance = null;
             }
         }
 
@@ -100,26 +89,27 @@
         /// <param name="e">イベント引数</param>
         private void watchTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            var timer = sender as Timer;
-
-            lock (lockObject)
+            if (this.isWorking)
             {
-                // タイマーを止める
-                timer.Stop();
+                return;
+            }
 
-                try
-                {
-                    this.WatchCore();
-                }
-                catch (Exception ex)
-                {
-                    ActGlobals.oFormActMain.WriteExceptionLog(
-                        ex,
-                        "ACT.MPTimer FF14の監視スレッドで例外が発生しました");
-                }
+            try
+            {
+                this.isWorking = true;
 
-                // タイマーを再開する
-                timer.Start();
+                this.WatchCore();
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(
+                    "ACT.MPTimer FF14の監視スレッドで例外が発生しました" + Environment.NewLine +
+                    ex.ToString());
+            }
+            finally
+            {
+                this.isWorking = false;
+                this.watchTimer.Start();
             }
         }
 
@@ -134,12 +124,13 @@
                 return;
             }
 
+#if !DEBUG
             // FF14Processがなければ何もしない
-            var ff14 = FF14PluginHelper.GetFFXIVProcess;
-            if (ff14 == null)
+            if (!FF14PluginHelper.ExistsFFXIVProcess)
             {
                 return;
             }
+#endif
 
             // MP回復スパンを開始する
             this.WacthMPRecovery();

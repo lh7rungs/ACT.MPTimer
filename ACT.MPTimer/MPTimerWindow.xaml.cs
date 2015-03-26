@@ -1,20 +1,83 @@
 ﻿namespace ACT.MPTimer
 {
     using System;
+    using System.Diagnostics;
     using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Media;
     using System.Windows.Threading;
 
     using ACT.MPTimer.Properties;
-    using ACT.MPTimer.Utility;
-    using Advanced_Combat_Tracker;
 
     /// <summary>
     /// MPTimer Window
     /// </summary>
     public partial class MPTimerWindow : Window
     {
+        private static MPTimerWindow instance;
+
+        public static MPTimerWindow Default
+        {
+            get { return instance ?? (instance = new MPTimerWindow()); }
+        }
+
+        public static void Reload()
+        {
+            if (instance != null)
+            {
+                instance.Close();
+                instance = null;
+            }
+
+            instance = new MPTimerWindow();
+        }
+
+        public MPTimerWindow()
+        {
+            this.InitializeComponent();
+
+            this.ViewModel = this.DataContext as MPTimerWindowViewModel;
+
+            if (Settings.Default.ClickThrough)
+            {
+                this.ToTransparentWindow();
+            }
+
+            this.MouseLeftButtonDown += (s, e) =>
+            {
+                this.DragMove();
+            };
+
+            this.Loaded += (s, e) =>
+            {
+                this.Left = Settings.Default.OverlayLeft;
+                this.Top = Settings.Default.OverlayTop;
+
+                var timer = new DispatcherTimer()
+                {
+                    Interval = new TimeSpan(0, 0, 0, 3, 0),
+                };
+
+                timer.Tick += (s1, e1) =>
+                {
+                    if (this.Opacity > 0.0d)
+                    {
+                        this.Topmost = false;
+                        this.Topmost = true;
+                    }
+                };
+
+                timer.Start();
+            };
+
+            Trace.WriteLine("New MPTimerOverlay.");
+        }
+
+        public MPTimerWindowViewModel ViewModel
+        {
+            get;
+            private set;
+        }
+
+#if false
         /// <summary>
         /// ロックオブジェクト
         /// </summary>
@@ -29,6 +92,11 @@
         /// 停止中か？
         /// </summary>
         private bool IsStopping;
+
+        /// <summary>
+        /// 処理中か？
+        /// </summary>
+        private bool IsWorking;
 
         /// <summary>フォントのBrush</summary>
         private SolidColorBrush FontBrush { get; set; }
@@ -55,7 +123,7 @@
             this.ShowInTaskbar = false;
             this.Topmost = true;
 
-            this.Loaded += MPTimerWindow_Loaded;
+            this.Loaded += this.MPTimerWindow_Loaded;
         }
 
         /// <summary>
@@ -124,7 +192,16 @@
         {
             lock (lockObject)
             {
+                if (this.IsWorking)
+                {
+                    return;
+                }
+
+                this.IsWorking = true;
+
                 this.MPWatchCore();
+
+                this.IsWorking = false;
             }
         }
 
@@ -135,12 +212,10 @@
         {
             try
             {
-                this.MPWatchTimer.Stop();
-
                 // ACTが表示されていなければ何もしない
                 if (!ActGlobals.oFormActMain.Visible)
                 {
-                    this.MPWatchTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
+                    this.MPWatchTimer.Interval = new TimeSpan(0, 0, 0, 5, 0);
                     this.Opacity = 0;
                     return;
                 }
@@ -150,7 +225,7 @@
                 var ff14 = FF14PluginHelper.GetFFXIVProcess;
                 if (ff14 == null)
                 {
-                    this.MPWatchTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
+                    this.MPWatchTimer.Interval = new TimeSpan(0, 0, 0, 5, 0);
                     this.Opacity = 0;
                     return;
                 }
@@ -178,10 +253,6 @@
 
                 this.Opacity = 0;
             }
-            finally
-            {
-                this.MPWatchTimer.Start();
-            }
         }
 
         /// <summary>
@@ -193,18 +264,19 @@
             var recastTime = string.Empty;
             if (FF14Watcher.Default.TimeOfRecovery > 0)
             {
-                recastTime = ((decimal)FF14Watcher.Default.TimeOfRecovery / 1000m).ToString("0.0");
+                recastTime = ((double)FF14Watcher.Default.TimeOfRecovery / 1000d).ToString("N1");
             }
+
+            // 進捗率を取得する
+            var rateOfMPRecovery = FF14Watcher.Default.RateOfRecovery;
 
 #if DEBUG
             if (string.IsNullOrWhiteSpace(recastTime))
             {
-                recastTime = "3.0";
+                rateOfMPRecovery = 0.65d;
+                recastTime = (Constants.MPRecoverySpan * rateOfMPRecovery).ToString("N1");
             }
 #endif
-
-            // 進捗率を取得する
-            var rateOfMPRecovery = FF14Watcher.Default.RateOfRecovery;
 
             // 戦闘中のみ？
             if (Settings.Default.CountInCombat)
@@ -220,7 +292,7 @@
             if (this.IsStopping)
             {
                 recastTime = "Ready";
-                rateOfMPRecovery = 1m;
+                rateOfMPRecovery = 1.0d;
             }
 
             // 透過率を設定する
@@ -229,58 +301,36 @@
             this.Topmost = false;
             this.Topmost = true;
 
-            Dispatcher.BeginInvoke(new Action(() =>
+            // 秒数を描画する
+            if (this.RecastTimeTextBlock.Text != recastTime)
             {
-                // 秒数を描画する
-                if (this.RecastTimeTextBlock.Text != recastTime)
-                {
-                    this.RecastTimeTextBlock.FontFamily = Settings.Default.Font.ToFontFamilyWPF();
-                    this.RecastTimeTextBlock.FontSize = Settings.Default.Font.ToFontSizeWPF();
-                    this.RecastTimeTextBlock.FontStyle = Settings.Default.Font.ToFontStyleWPF();
-                    this.RecastTimeTextBlock.FontWeight = Settings.Default.Font.ToFontWeightWPF();
-                    this.RecastTimeTextBlock.Fill = this.FontBrush;
-                    this.RecastTimeTextBlock.Stroke = this.FontOutlineBrush;
-                    this.RecastTimeTextBlock.StrokeThickness = (this.RecastTimeTextBlock.FontSize / 100.0d) * 3.0d;
-                    this.RecastTimeTextBlock.Text = recastTime;
-                }
+                this.RecastTimeTextBlock.FontFamily = Settings.Default.Font.ToFontFamilyWPF();
+                this.RecastTimeTextBlock.FontSize = Settings.Default.Font.ToFontSizeWPF();
+                this.RecastTimeTextBlock.FontStyle = Settings.Default.Font.ToFontStyleWPF();
+                this.RecastTimeTextBlock.FontWeight = Settings.Default.Font.ToFontWeightWPF();
+                this.RecastTimeTextBlock.Fill = this.FontBrush;
+                this.RecastTimeTextBlock.Stroke = this.FontOutlineBrush;
+                this.RecastTimeTextBlock.StrokeThickness = 0.5d * this.RecastTimeTextBlock.FontSize / 13.0d;
+                this.RecastTimeTextBlock.Text = recastTime;
+            }
 
-                // プログレスバーを描画する
-                var foreRect = this.BarRectangle;
-                foreRect.Stroke = this.BarBrush;
-                foreRect.Fill = this.BarBrush;
-                foreRect.Width = (double)(Settings.Default.ProgressBarSize.Width * rateOfMPRecovery);
-                foreRect.Height = Settings.Default.ProgressBarSize.Height;
-                foreRect.RadiusX = 4.0d;
-                foreRect.RadiusY = 4.0d;
-                Canvas.SetLeft(foreRect, 0);
-                Canvas.SetTop(foreRect, 0);
+            // プログレスバーを描画する
+            var foreRect = this.BarRectangle;
+            foreRect.Stroke = this.BarBrush;
+            foreRect.Fill = this.BarBrush;
+            foreRect.Width = (double)(Settings.Default.ProgressBarSize.Width * rateOfMPRecovery);
 
-                var backRect = this.BarBackRectangle;
-                backRect.Stroke = this.BarBackBrush;
-                backRect.Fill = this.BarBackBrush;
-                backRect.Width = Settings.Default.ProgressBarSize.Width;
-                backRect.Height = Settings.Default.ProgressBarSize.Height;
-                backRect.RadiusX = 4.0d;
-                backRect.RadiusY = 4.0d;
-                Canvas.SetLeft(backRect, 0);
-                Canvas.SetTop(backRect, 0);
+            var backRect = this.BarBackRectangle;
+            backRect.Stroke = this.BarBackBrush;
+            backRect.Fill = this.BarBackBrush;
+            backRect.Width = Settings.Default.ProgressBarSize.Width;
+            backRect.Height = Settings.Default.ProgressBarSize.Height;
 
-                var outlineRect = this.BarOutlineRectangle;
-                outlineRect.Stroke = this.BarOutlineBrush;
-                outlineRect.Fill = Brushes.Transparent;
-                outlineRect.Width = Settings.Default.ProgressBarSize.Width;
-                outlineRect.Height = Settings.Default.ProgressBarSize.Height;
-                outlineRect.RadiusX = 4.0d;
-                outlineRect.RadiusY = 4.0d;
-                Canvas.SetLeft(outlineRect, 0);
-                Canvas.SetTop(outlineRect, 0);
-
-                this.BarRectangleEffect.Color = this.BarBrush.Color;
-
-                // プログレスバーキャンパスのレイアウトを調整する
-                this.ProgressBarCanvas.Width = Settings.Default.ProgressBarSize.Width;
-                this.ProgressBarCanvas.Height = Settings.Default.ProgressBarSize.Height;
-            }));
+            var outlineRect = this.BarOutlineRectangle;
+            outlineRect.Stroke = this.BarOutlineBrush;
+            outlineRect.StrokeThickness = 1.0d;
+            outlineRect.Fill = Brushes.Transparent;
         }
+#endif
     }
 }

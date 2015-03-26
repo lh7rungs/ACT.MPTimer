@@ -1,27 +1,34 @@
 ﻿namespace ACT.MPTimer
 {
     using System;
+    using System.Diagnostics;
     using System.Windows.Forms;
 
     using ACT.MPTimer.Properties;
+    using ACT.MPTimer.Utility;
 
     /// <summary>
     /// 設定Panel
     /// </summary>
     public partial class ConfigPanel : UserControl
     {
+        private static ConfigPanel instance;
+
+        public static ConfigPanel Default
+        {
+            get { return instance ?? (instance = new ConfigPanel()); }
+        }
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
         public ConfigPanel()
         {
             this.InitializeComponent();
-        }
+            this.Dock = DockStyle.Fill;
 
-        /// <summary>
-        /// MPTimer Window
-        /// </summary>
-        public MPTimerWindow MPTimerWindow { get; set; }
+            TraceUtility.LogTextBox = this.LogRichTextBox;
+        }
 
         /// <summary>
         /// Load
@@ -38,38 +45,49 @@
 
             this.TekiyoButton.Click += (s1, e1) =>
             {
-                Settings.Default.OverlayTop = (int)this.MPTimerWindow.Top;
-                Settings.Default.OverlayLeft = (int)this.MPTimerWindow.Left;
-                this.SaveSettings();
-
-                this.MPTimerWindow.Close();
-                this.MPTimerWindow = new MPTimerWindow();
-                if (Settings.Default.ClickThrough)
+                try
                 {
-                    this.MPTimerWindow.ToTransparentWindow();
-                }
+                    FF14Watcher.Deinitialize();
 
-                this.MPTimerWindow.Show();
+                    Settings.Default.OverlayTop = (int)MPTimerWindow.Default.Top;
+                    Settings.Default.OverlayLeft = (int)MPTimerWindow.Default.Left;
+
+                    this.SaveSettings();
+
+                    MPTimerWindow.Reload();
+                    MPTimerWindow.Default.Show();
+
+                    Trace.WriteLine("Change settings.");
+                }
+                finally
+                {
+                    FF14Watcher.Initialize();
+                }
             };
 
             this.ShokikaButton.Click += (s1, e1) =>
             {
-                Settings.Default.Reset();
-                Settings.Default.Save();
-
-                this.MPTimerWindow.Top = Settings.Default.OverlayTop;
-                this.MPTimerWindow.Left = Settings.Default.OverlayLeft;
-
-                this.LoadSettings();
-
-                this.MPTimerWindow.Close();
-                this.MPTimerWindow = new MPTimerWindow();
-                if (Settings.Default.ClickThrough)
+                try
                 {
-                    this.MPTimerWindow.ToTransparentWindow();
-                }
+                    FF14Watcher.Deinitialize();
 
-                this.MPTimerWindow.Show();
+                    Settings.Default.Reset();
+                    Settings.Default.Save();
+
+                    MPTimerWindow.Default.Top = Settings.Default.OverlayTop;
+                    MPTimerWindow.Default.Left = Settings.Default.OverlayLeft;
+
+                    this.LoadSettings();
+
+                    MPTimerWindow.Reload();
+                    MPTimerWindow.Default.Show();
+
+                    Trace.WriteLine("Reset settings.");
+                }
+                finally
+                {
+                    FF14Watcher.Initialize();
+                }
             };
         }
 
@@ -93,7 +111,6 @@
             this.TargetJobComboBox.SelectedValue = Settings.Default.TargetJobId;
             this.ClickThroughCheckBox.Checked = Settings.Default.ClickThrough;
 
-            this.OverlayRefreshRateNumericUpDown.Value = Settings.Default.OverlayRefreshRate;
             this.MPRefreshRateNumericUpDown.Value = Settings.Default.ParameterRefreshRate;
         }
 
@@ -116,7 +133,6 @@
             Settings.Default.TargetJobId = (int)this.TargetJobComboBox.SelectedValue;
             Settings.Default.ClickThrough = this.ClickThroughCheckBox.Checked;
 
-            Settings.Default.OverlayRefreshRate = (int)this.OverlayRefreshRateNumericUpDown.Value;
             Settings.Default.ParameterRefreshRate = (int)this.MPRefreshRateNumericUpDown.Value;
 
             Settings.Default.Save();

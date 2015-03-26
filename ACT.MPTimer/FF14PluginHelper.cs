@@ -71,6 +71,15 @@
             }
         }
 
+        public static bool ExistsFFXIVProcess
+        {
+            get
+            {
+                var ps = Process.GetProcessesByName("ffxiv");
+                return ps != null ? ps.Length > 0 : false;
+            }
+        }
+
         public static Process GetFFXIVProcess
         {
             get
@@ -93,6 +102,52 @@
                     return null;
                 }
             }
+        }
+
+        public static Combatant GetCombatantPlayer()
+        {
+            var result = default(Combatant);
+
+            Initialize();
+
+#if DEBUG
+            result = new Combatant();
+            result.Job = 25;
+            result.CurrentMP = 1000;
+            result.MaxMP = 5400;
+            return result;
+#else
+            if (plugin == null)
+            {
+                return result;
+            }
+
+            if (GetFFXIVProcess == null)
+            {
+                return result;
+            }
+
+            if (pluginScancombat == null)
+            {
+                return result;
+            }
+
+            dynamic list = pluginScancombat.GetCombatantList();
+            if (list.Count > 0)
+            {
+                var item = list[0];
+                var combatant = new Combatant();
+
+                combatant.ID = (uint)item.ID;
+                combatant.Job = (int)item.Job;
+                combatant.CurrentMP = (int)item.CurrentMP;
+                combatant.MaxMP = (int)item.MaxMP;
+
+                result = combatant;
+            }
+
+            return result;
+#endif
         }
 
         public static List<Combatant> GetCombatantList()

@@ -214,9 +214,11 @@
                 this.Text,
                 CultureInfo.CurrentUICulture,
                 this.FlowDirection,
-                new Typeface(this.FontFamily, this.FontStyle, this.FontWeight, FontStretches.Normal),
+                new Typeface(this.FontFamily, this.FontStyle, this.FontWeight, this.FontStretch),
                 this.FontSize,
-                Brushes.Black);
+                Brushes.Black,
+                new NumberSubstitution(),
+                TextFormattingMode.Ideal);
 
             this.UpdateFormattedText();
         }

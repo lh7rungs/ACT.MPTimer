@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("anoyetta")]
 [assembly: AssemblyProduct("ACT.MPTimer")]
-[assembly: AssemblyCopyright("Copyright (c) 2014, anoyetta")]
+[assembly: AssemblyCopyright("Copyright (c) 2014-2015, anoyetta")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
 [assembly: Guid("c20f6424-6b5a-492b-840f-e80b1c90fe31")]
 
-[assembly: AssemblyVersion("1.4.0.2")]
-[assembly: AssemblyFileVersion("1.4.0.2")]
+[assembly: AssemblyVersion("1.4.0.3")]
+[assembly: AssemblyFileVersion("1.4.0.3")]
