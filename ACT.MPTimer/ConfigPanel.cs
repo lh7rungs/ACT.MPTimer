@@ -19,11 +19,6 @@
         }
 
         /// <summary>
-        /// MPTimer Window
-        /// </summary>
-        public MPTimerWindow MPTimerWindow { get; set; }
-
-        /// <summary>
         /// Load
         /// </summary>
         /// <param name="sender">イベント発生元</param>
@@ -38,18 +33,13 @@
 
             this.TekiyoButton.Click += (s1, e1) =>
             {
-                Settings.Default.OverlayTop = (int)this.MPTimerWindow.Top;
-                Settings.Default.OverlayLeft = (int)this.MPTimerWindow.Left;
+                Settings.Default.OverlayTop = (int)MPTimerWindow.Default.Top;
+                Settings.Default.OverlayLeft = (int)MPTimerWindow.Default.Left;
+
                 this.SaveSettings();
 
-                this.MPTimerWindow.Close();
-                this.MPTimerWindow = new MPTimerWindow();
-                if (Settings.Default.ClickThrough)
-                {
-                    this.MPTimerWindow.ToTransparentWindow();
-                }
-
-                this.MPTimerWindow.Show();
+                MPTimerWindow.Reload();
+                MPTimerWindow.Default.Show();
             };
 
             this.ShokikaButton.Click += (s1, e1) =>
@@ -57,19 +47,13 @@
                 Settings.Default.Reset();
                 Settings.Default.Save();
 
-                this.MPTimerWindow.Top = Settings.Default.OverlayTop;
-                this.MPTimerWindow.Left = Settings.Default.OverlayLeft;
+                MPTimerWindow.Default.Top = Settings.Default.OverlayTop;
+                MPTimerWindow.Default.Left = Settings.Default.OverlayLeft;
 
                 this.LoadSettings();
 
-                this.MPTimerWindow.Close();
-                this.MPTimerWindow = new MPTimerWindow();
-                if (Settings.Default.ClickThrough)
-                {
-                    this.MPTimerWindow.ToTransparentWindow();
-                }
-
-                this.MPTimerWindow.Show();
+                MPTimerWindow.Reload();
+                MPTimerWindow.Default.Show();
             };
         }
 
@@ -93,7 +77,6 @@
             this.TargetJobComboBox.SelectedValue = Settings.Default.TargetJobId;
             this.ClickThroughCheckBox.Checked = Settings.Default.ClickThrough;
 
-            this.OverlayRefreshRateNumericUpDown.Value = Settings.Default.OverlayRefreshRate;
             this.MPRefreshRateNumericUpDown.Value = Settings.Default.ParameterRefreshRate;
         }
 
@@ -116,7 +99,6 @@
             Settings.Default.TargetJobId = (int)this.TargetJobComboBox.SelectedValue;
             Settings.Default.ClickThrough = this.ClickThroughCheckBox.Checked;
 
-            Settings.Default.OverlayRefreshRate = (int)this.OverlayRefreshRateNumericUpDown.Value;
             Settings.Default.ParameterRefreshRate = (int)this.MPRefreshRateNumericUpDown.Value;
 
             Settings.Default.Save();

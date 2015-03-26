@@ -40,6 +40,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows" />
@@ -60,16 +61,17 @@
     <Compile Include="ConfigPanel.Designer.cs">
       <DependentUpon>ConfigPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Constants.cs" />
     <Compile Include="FF14PluginHelper.cs" />
     <Compile Include="FF14PluginHelper.Extension.cs" />
     <Compile Include="FF14Watcher.cs" />
-    <Compile Include="FF14Watcher.LogWatcher.cs" />
     <Compile Include="FF14Watcher.MPWatcher.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="MPTimerPlugin.cs" />
     <Compile Include="MPTimerWindow.xaml.cs">
       <DependentUpon>MPTimerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MPTimerWindowViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -101,6 +103,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="MPTimerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

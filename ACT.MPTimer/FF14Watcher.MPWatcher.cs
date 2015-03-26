@@ -1,7 +1,7 @@
 ﻿namespace ACT.MPTimer
 {
     using System;
-    using System.Collections.Generic;
+    using System.Linq;
 
     using ACT.MPTimer.Properties;
 
@@ -10,16 +10,6 @@
     /// </summary>
     public partial class FF14Watcher
     {
-        /// <summary>
-        /// 回復までの残り割合
-        /// </summary>
-        public decimal RateOfRecovery { get; private set; }
-
-        /// <summary>
-        /// 回復までの時間(ミリ秒)
-        /// </summary>
-        public int TimeOfRecovery { get; private set; }
-
         /// <summary>
         /// 最後に回復した日時
         /// </summary>
@@ -36,48 +26,36 @@
         public DateTime LastMPFullDateTime { get; private set; }
 
         /// <summary>
-        /// プレイヤーがいるか？
-        /// </summary>
-        public bool ExistPlayer { get; private set; }
-
-        /// <summary>
-        /// 戦闘中？
-        /// </summary>
-        public bool InCombat { get; private set; }
-
-        /// <summary>
         /// 直前のMP
         /// </summary>
         private int PreviousMP { get; set; }
-
-        /// <summary>
-        /// 状態別のMP回復値の辞書
-        /// </summary>
-        private Dictionary<string, int> MPRecoveryValueDictionary = new Dictionary<string, int>();
 
         /// <summary>
         /// MP回復スパンを監視する
         /// </summary>
         public void WacthMPRecovery()
         {
-            FF14PluginHelper.RefreshPlayer();
-            var player = FF14PluginHelper.GetPlayer();
+            var vm = MPTimerWindow.Default.ViewModel;
+
+            var player = FF14PluginHelper.GetCombatantPlayer();
             if (player == null)
             {
-                this.ExistPlayer = false;
+                vm.Visible = false;
                 return;
             }
-
-            this.ExistPlayer = true;
 
             // ジョブ指定？
             if (Settings.Default.TargetJobId != 0)
             {
-                this.ExistPlayer = player.Job == Settings.Default.TargetJobId;
-                if (!this.ExistPlayer)
+                vm.Visible = player.Job == Settings.Default.TargetJobId;
+                if (!vm.Visible)
                 {
                     return;
                 }
+            }
+            else
+            {
+                vm.Visible = true;
             }
 
             // 戦闘中のみ稼働させる？
@@ -94,60 +72,58 @@
                 if (player.CurrentMP >= player.MaxMP ||
                     this.PreviousMP < 0)
                 {
-                    // 前回の満タンから20秒以上経過した？
+                    // 前回の満タンからn秒以上経過した？
                     if ((DateTime.Now - this.LastMPFullDateTime).TotalSeconds >=
                         Settings.Default.CountInCombatSpan)
                     {
-                        this.InCombat = false;
+                        vm.InCombat = false;
                     }
                 }
                 else
                 {
-                    this.InCombat = true;
+                    vm.InCombat = true;
                 }
             }
 
-            // プレイヤーのステータスを取得する
-            var playerStatus = FF14PluginHelper.GetPlayerData();
+            // 自然回復による回復量を求める
+            var mpRecoveryValueNorml = (int)Math.Floor(player.MaxMP * Constants.MPRecoveryRate.Normal);
+            var mpRecoveryValueInCombat = (int)Math.Floor(player.MaxMP * Constants.MPRecoveryRate.InCombat);
+            var mpRecoveryValueUI1 = (int)Math.Floor(player.MaxMP * Constants.MPRecoveryRate.UmbralIce1);
+            var mpRecoveryValueUI2 = (int)Math.Floor(player.MaxMP * Constants.MPRecoveryRate.UmbralIce2);
+            var mpRecoveryValueUI3 = (int)Math.Floor(player.MaxMP * Constants.MPRecoveryRate.UmbralIce3);
+
+            var mpRecoveryValues = new int[]
+            {
+                mpRecoveryValueNorml,
+                mpRecoveryValueNorml + mpRecoveryValueUI1,
+                mpRecoveryValueNorml + mpRecoveryValueUI2,
+                mpRecoveryValueNorml + mpRecoveryValueUI3,
+                mpRecoveryValueInCombat,
+                mpRecoveryValueInCombat + mpRecoveryValueUI1,
+                mpRecoveryValueInCombat + mpRecoveryValueUI2,
+                mpRecoveryValueInCombat + mpRecoveryValueUI3,
+            };
 
             var now = DateTime.Now;
 
             // MPが回復している？
-            if (player.CurrentMP > this.PreviousMP)
+            if (this.PreviousMP > -1 &&
+                player.CurrentMP > this.PreviousMP)
             {
-                // 現在のプレイヤー状態を辞書向けのキーに変換する
-                var key = playerStatus.Pie.ToString() + "-" + this.CurrentMPRecoveryStatus.ToString();
+                // 今回の回復量を算出する
+                var mpRecoveryValue = player.CurrentMP - this.PreviousMP;
 
-                // 今回で満タンではない？
-                if (this.PreviousMP > -1 &&
-                    player.CurrentMP < player.MaxMP)
+                // 算出した回復量と一致する？
+                if (mpRecoveryValues.Any(x => x == mpRecoveryValue))
                 {
-                    // 回復量を算出する
-                    var mpRecoveryValue = player.CurrentMP - this.PreviousMP;
-
-                    // バラード中ではなくアストラルファイア中でもない？
-                    if (!this.BalladEnabled &&
-                        this.CurrentMPRecoveryStatus != MPRecoveryStatus.AstralFire)
-                    {
-                        // 現在の状態の回復量を記録する
-                        this.MPRecoveryValueDictionary[key] = mpRecoveryValue;
-                    }
-
-                    // 今の状態の回復量の辞書がある？
-                    if (this.MPRecoveryValueDictionary.ContainsKey(key))
-                    {
-                        // アストラファイア中ではない？
-                        if (this.CurrentMPRecoveryStatus != MPRecoveryStatus.AstralFire)
-                        {
-                            // 記録された回復量と今回の回復量が一致する？
-                            if (mpRecoveryValue == this.MPRecoveryValueDictionary[key])
-                            {
-                                this.LastRecoveryDateTime = now;
-                                this.NextRecoveryDateTime = this.LastRecoveryDateTime.AddSeconds(3d);
-                            }
-                        }
-                    }
+                    this.LastRecoveryDateTime = now;
+                    this.NextRecoveryDateTime = this.LastRecoveryDateTime.AddSeconds(Constants.MPRecoverySpan);
                 }
+            }
+
+            if (this.NextRecoveryDateTime <= DateTime.MinValue)
+            {
+                this.NextRecoveryDateTime = now.AddSeconds(Constants.MPRecoverySpan);
             }
 
             // 回復までの残り時間を算出する
@@ -157,7 +133,7 @@
             if (remain <= 0.0d)
             {
                 this.LastRecoveryDateTime = now.AddMilliseconds(remain);
-                this.NextRecoveryDateTime = this.LastRecoveryDateTime.AddSeconds(3d);
+                this.NextRecoveryDateTime = this.LastRecoveryDateTime.AddSeconds(Constants.MPRecoverySpan);
             }
 
             if (remain < 0d)
@@ -165,10 +141,8 @@
                 remain = 0d;
             }
 
-            this.TimeOfRecovery = Convert.ToInt32(remain);
-
-            // 回復までの残り時間の割合を算出する
-            this.RateOfRecovery = (decimal)(3000 - this.TimeOfRecovery) / 3000m;
+            // ViewModelにセットする
+            vm.TimeToRecovery = remain;
 
             // 現在のMPを保存する
             this.PreviousMP = player.CurrentMP;

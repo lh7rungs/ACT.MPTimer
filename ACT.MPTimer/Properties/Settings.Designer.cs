@@ -193,18 +193,6 @@ namespace ACT.MPTimer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("50")]
-        public int OverlayRefreshRate {
-            get {
-                return ((int)(this["OverlayRefreshRate"]));
-            }
-            set {
-                this["OverlayRefreshRate"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("80")]
         public int ParameterRefreshRate {
             get {

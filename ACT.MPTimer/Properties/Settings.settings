@@ -44,9 +44,6 @@
     <Setting Name="ProgressBarSize" Type="System.Drawing.Size" Scope="User">
       <Value Profile="(Default)">110, 7</Value>
     </Setting>
-    <Setting Name="OverlayRefreshRate" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">50</Value>
-    </Setting>
     <Setting Name="ParameterRefreshRate" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">80</Value>
     </Setting>

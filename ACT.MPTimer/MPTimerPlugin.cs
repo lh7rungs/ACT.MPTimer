@@ -21,15 +21,6 @@
         }
 
         /// <summary>
-        /// MPタイマWindow
-        /// </summary>
-        private MPTimerWindow MPTimerWindow
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// プラグインを初期化する
         /// </summary>
         /// <param name="pluginScreenSpace"></param>
@@ -45,20 +36,14 @@
                 // アップデートを確認する
                 this.Update();
 
+                // MP回復タイミングFormを表示する
+                MPTimerWindow.Default.Show();
+
                 // FF14監視スレッドを開始する
                 FF14Watcher.Initialize();
 
-                // MP回復タイミングFormを表示する
-                this.MPTimerWindow = new MPTimerWindow();
-                this.MPTimerWindow.Show();
-                if (Settings.Default.ClickThrough)
-                {
-                    this.MPTimerWindow.ToTransparentWindow();
-                }
-
                 // 設定Panelを追加する
                 var panel = new ConfigPanel();
-                panel.MPTimerWindow = this.MPTimerWindow;
                 panel.Dock = DockStyle.Fill;
                 pluginScreenSpace.Controls.Add(panel);
 
@@ -79,12 +64,12 @@
         void IActPluginV1.DeInitPlugin()
         {
             // Windowの位置を保存する
-            Settings.Default.OverlayTop = (int)this.MPTimerWindow.Top;
-            Settings.Default.OverlayLeft = (int)this.MPTimerWindow.Left;
+            Settings.Default.OverlayTop = (int)MPTimerWindow.Default.Top;
+            Settings.Default.OverlayLeft = (int)MPTimerWindow.Default.Left;
             Settings.Default.Save();
 
             FF14Watcher.Deinitialize();
-            this.MPTimerWindow.Close();
+            MPTimerWindow.Default.Close();
 
             this.PluginStatusLabel.Text = "Plugin Exited";
         }
