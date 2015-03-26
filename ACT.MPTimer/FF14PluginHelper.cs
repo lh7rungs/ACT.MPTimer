@@ -122,7 +122,7 @@
                 return result;
             }
 
-            if (!ExistsFFXIVProcess)
+            if (GetFFXIVProcess == null)
             {
                 return result;
             }
@@ -161,7 +161,7 @@
                 return result;
             }
 
-            if (!ExistsFFXIVProcess)
+            if (GetFFXIVProcess == null)
             {
                 return result;
             }
@@ -212,7 +212,7 @@
                 return result;
             }
 
-            if (!ExistsFFXIVProcess)
+            if (GetFFXIVProcess == null)
             {
                 return result;
             }
@@ -261,7 +261,7 @@
                 return partyList;
             }
 
-            if (!ExistsFFXIVProcess)
+            if (GetFFXIVProcess == null)
             {
                 return partyList;
             }

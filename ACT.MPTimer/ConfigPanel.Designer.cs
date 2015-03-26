@@ -57,9 +57,10 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 27);
+            this.label4.Location = new System.Drawing.Point(4, 34);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(105, 12);
+            this.label4.Size = new System.Drawing.Size(131, 15);
             this.label4.TabIndex = 6;
             this.label4.Text = "オーバーレイの見た目";
             // 
@@ -72,17 +73,19 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 98);
+            this.label5.Location = new System.Drawing.Point(4, 122);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(41, 12);
+            this.label5.Size = new System.Drawing.Size(52, 15);
             this.label5.TabIndex = 11;
             this.label5.Text = "透過率";
             // 
             // TokaRitsuNumericUpDown
             // 
-            this.TokaRitsuNumericUpDown.Location = new System.Drawing.Point(163, 94);
+            this.TokaRitsuNumericUpDown.Location = new System.Drawing.Point(217, 118);
+            this.TokaRitsuNumericUpDown.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TokaRitsuNumericUpDown.Name = "TokaRitsuNumericUpDown";
-            this.TokaRitsuNumericUpDown.Size = new System.Drawing.Size(65, 19);
+            this.TokaRitsuNumericUpDown.Size = new System.Drawing.Size(87, 22);
             this.TokaRitsuNumericUpDown.TabIndex = 5;
             this.TokaRitsuNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.TokaRitsuNumericUpDown.Value = new decimal(new int[] {
@@ -93,9 +96,10 @@
             // 
             // ShokikaButton
             // 
-            this.ShokikaButton.Location = new System.Drawing.Point(5, 286);
+            this.ShokikaButton.Location = new System.Drawing.Point(7, 358);
+            this.ShokikaButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ShokikaButton.Name = "ShokikaButton";
-            this.ShokikaButton.Size = new System.Drawing.Size(68, 23);
+            this.ShokikaButton.Size = new System.Drawing.Size(91, 29);
             this.ShokikaButton.TabIndex = 10;
             this.ShokikaButton.Text = "初期化";
             this.ShokikaButton.UseVisualStyleBackColor = true;
@@ -103,9 +107,10 @@
             // CountInCombatCheckBox
             // 
             this.CountInCombatCheckBox.AutoSize = true;
-            this.CountInCombatCheckBox.Location = new System.Drawing.Point(163, 119);
+            this.CountInCombatCheckBox.Location = new System.Drawing.Point(217, 149);
+            this.CountInCombatCheckBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.CountInCombatCheckBox.Name = "CountInCombatCheckBox";
-            this.CountInCombatCheckBox.Size = new System.Drawing.Size(48, 16);
+            this.CountInCombatCheckBox.Size = new System.Drawing.Size(59, 19);
             this.CountInCombatCheckBox.TabIndex = 6;
             this.CountInCombatCheckBox.Text = "有効";
             this.CountInCombatCheckBox.UseVisualStyleBackColor = true;
@@ -113,18 +118,20 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 123);
+            this.label6.Location = new System.Drawing.Point(4, 154);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(113, 12);
+            this.label6.Size = new System.Drawing.Size(141, 15);
             this.label6.TabIndex = 15;
             this.label6.Text = "戦闘中のみ稼働させる";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 169);
+            this.label7.Location = new System.Drawing.Point(4, 211);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(132, 12);
+            this.label7.Size = new System.Drawing.Size(164, 15);
             this.label7.TabIndex = 16;
             this.label7.Text = "特定ジョブのとき稼働させる";
             // 
@@ -132,58 +139,64 @@
             // 
             this.TargetJobComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.TargetJobComboBox.FormattingEnabled = true;
-            this.TargetJobComboBox.Location = new System.Drawing.Point(163, 166);
+            this.TargetJobComboBox.Location = new System.Drawing.Point(217, 208);
+            this.TargetJobComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TargetJobComboBox.Name = "TargetJobComboBox";
-            this.TargetJobComboBox.Size = new System.Drawing.Size(216, 20);
+            this.TargetJobComboBox.Size = new System.Drawing.Size(287, 23);
             this.TargetJobComboBox.TabIndex = 8;
             // 
             // CountInCombatNumericUpDown
             // 
             this.CountInCombatNumericUpDown.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.CountInCombatNumericUpDown.Location = new System.Drawing.Point(163, 141);
+            this.CountInCombatNumericUpDown.Location = new System.Drawing.Point(217, 176);
+            this.CountInCombatNumericUpDown.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.CountInCombatNumericUpDown.Maximum = new decimal(new int[] {
             3600,
             0,
             0,
             0});
             this.CountInCombatNumericUpDown.Name = "CountInCombatNumericUpDown";
-            this.CountInCombatNumericUpDown.Size = new System.Drawing.Size(63, 19);
+            this.CountInCombatNumericUpDown.Size = new System.Drawing.Size(84, 22);
             this.CountInCombatNumericUpDown.TabIndex = 7;
             this.CountInCombatNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(232, 143);
+            this.label8.Location = new System.Drawing.Point(309, 179);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(138, 12);
+            this.label8.Size = new System.Drawing.Size(172, 15);
             this.label8.TabIndex = 19;
             this.label8.Text = "秒経過で戦闘終了とみなす";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 193);
+            this.label9.Location = new System.Drawing.Point(4, 241);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(64, 12);
+            this.label9.Size = new System.Drawing.Size(80, 15);
             this.label9.TabIndex = 20;
             this.label9.Text = "クリックスルー";
             // 
             // ClickThroughCheckBox
             // 
             this.ClickThroughCheckBox.AutoSize = true;
-            this.ClickThroughCheckBox.Location = new System.Drawing.Point(163, 192);
+            this.ClickThroughCheckBox.Location = new System.Drawing.Point(217, 240);
+            this.ClickThroughCheckBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ClickThroughCheckBox.Name = "ClickThroughCheckBox";
-            this.ClickThroughCheckBox.Size = new System.Drawing.Size(48, 16);
+            this.ClickThroughCheckBox.Size = new System.Drawing.Size(59, 19);
             this.ClickThroughCheckBox.TabIndex = 9;
             this.ClickThroughCheckBox.Text = "有効";
             this.ClickThroughCheckBox.UseVisualStyleBackColor = true;
             // 
             // TekiyoButton
             // 
-            this.TekiyoButton.Location = new System.Drawing.Point(401, 286);
+            this.TekiyoButton.Location = new System.Drawing.Point(535, 358);
+            this.TekiyoButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TekiyoButton.Name = "TekiyoButton";
-            this.TekiyoButton.Size = new System.Drawing.Size(68, 23);
+            this.TekiyoButton.Size = new System.Drawing.Size(91, 29);
             this.TekiyoButton.TabIndex = 22;
             this.TekiyoButton.Text = "適用";
             this.TekiyoButton.UseVisualStyleBackColor = true;
@@ -191,16 +204,18 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(232, 218);
+            this.label3.Location = new System.Drawing.Point(309, 272);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(20, 12);
+            this.label3.Size = new System.Drawing.Size(25, 15);
             this.label3.TabIndex = 28;
             this.label3.Text = "ms";
             // 
             // MPRefreshRateNumericUpDown
             // 
             this.MPRefreshRateNumericUpDown.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.MPRefreshRateNumericUpDown.Location = new System.Drawing.Point(163, 214);
+            this.MPRefreshRateNumericUpDown.Location = new System.Drawing.Point(217, 268);
+            this.MPRefreshRateNumericUpDown.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MPRefreshRateNumericUpDown.Maximum = new decimal(new int[] {
             2000,
             0,
@@ -212,7 +227,7 @@
             0,
             0});
             this.MPRefreshRateNumericUpDown.Name = "MPRefreshRateNumericUpDown";
-            this.MPRefreshRateNumericUpDown.Size = new System.Drawing.Size(63, 19);
+            this.MPRefreshRateNumericUpDown.Size = new System.Drawing.Size(84, 22);
             this.MPRefreshRateNumericUpDown.TabIndex = 27;
             this.MPRefreshRateNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.MPRefreshRateNumericUpDown.Value = new decimal(new int[] {
@@ -224,9 +239,10 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 218);
+            this.label10.Location = new System.Drawing.Point(4, 272);
+            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(79, 12);
+            this.label10.Size = new System.Drawing.Size(99, 15);
             this.label10.TabIndex = 26;
             this.label10.Text = "MPの監視間隔";
             // 
@@ -236,11 +252,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LogRichTextBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.LogRichTextBox.Location = new System.Drawing.Point(5, 337);
+            this.LogRichTextBox.Location = new System.Drawing.Point(7, 421);
+            this.LogRichTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.LogRichTextBox.Name = "LogRichTextBox";
             this.LogRichTextBox.ReadOnly = true;
             this.LogRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.LogRichTextBox.Size = new System.Drawing.Size(791, 384);
+            this.LogRichTextBox.Size = new System.Drawing.Size(1053, 479);
             this.LogRichTextBox.TabIndex = 29;
             this.LogRichTextBox.TabStop = false;
             this.LogRichTextBox.Text = "";
@@ -254,15 +271,16 @@
             this.VisualSetting.BarSize = new System.Drawing.Size(110, 7);
             this.VisualSetting.FontColor = System.Drawing.Color.LightGoldenrodYellow;
             this.VisualSetting.FontOutlineColor = System.Drawing.Color.LightGoldenrodYellow;
-            this.VisualSetting.Location = new System.Drawing.Point(163, 22);
+            this.VisualSetting.Location = new System.Drawing.Point(217, 28);
+            this.VisualSetting.Margin = new System.Windows.Forms.Padding(4);
             this.VisualSetting.Name = "VisualSetting";
-            this.VisualSetting.Size = new System.Drawing.Size(306, 65);
+            this.VisualSetting.Size = new System.Drawing.Size(408, 81);
             this.VisualSetting.TabIndex = 21;
             this.VisualSetting.TextFont = new System.Drawing.Font("メイリオ", 9.75F);
             // 
             // ConfigPanel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label3);
             this.Controls.Add(this.MPRefreshRateNumericUpDown);
@@ -282,8 +300,9 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.LogRichTextBox);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ConfigPanel";
-            this.Size = new System.Drawing.Size(799, 724);
+            this.Size = new System.Drawing.Size(1065, 905);
             this.Load += new System.EventHandler(this.ConfigPanel_Load);
             ((System.ComponentModel.ISupportInitialize)(this.TokaRitsuNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CountInCombatNumericUpDown)).EndInit();
