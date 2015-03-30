@@ -1,6 +1,7 @@
 ﻿namespace ACT.MPTimer
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
 
@@ -30,6 +31,11 @@
         /// 直前のMP
         /// </summary>
         private int PreviousMP { get; set; }
+
+        /// <summary>
+        /// MP回復量を記録した辞書
+        /// </summary>
+        private Dictionary<int, int[]> MPRecoveryAmounts = new Dictionary<int, int[]>();
 
         private DateTime lastLoggingDateTime;
 
@@ -89,23 +95,28 @@
             }
 
             // 自然回復による回復量を求める
-            var mpRecoveryValueNorml = (int)Math.Floor(player.MaxMP * Constants.MPRecoveryRate.Normal);
-            var mpRecoveryValueInCombat = (int)Math.Floor(player.MaxMP * Constants.MPRecoveryRate.InCombat);
-            var mpRecoveryValueUI1 = (int)Math.Floor(player.MaxMP * Constants.MPRecoveryRate.UmbralIce1);
-            var mpRecoveryValueUI2 = (int)Math.Floor(player.MaxMP * Constants.MPRecoveryRate.UmbralIce2);
-            var mpRecoveryValueUI3 = (int)Math.Floor(player.MaxMP * Constants.MPRecoveryRate.UmbralIce3);
-
-            var mpRecoveryValues = new int[]
+            if (!this.MPRecoveryAmounts.ContainsKey(player.MaxMP))
             {
-                mpRecoveryValueNorml,
-                mpRecoveryValueNorml + mpRecoveryValueUI1,
-                mpRecoveryValueNorml + mpRecoveryValueUI2,
-                mpRecoveryValueNorml + mpRecoveryValueUI3,
-                mpRecoveryValueInCombat,
-                mpRecoveryValueInCombat + mpRecoveryValueUI1,
-                mpRecoveryValueInCombat + mpRecoveryValueUI2,
-                mpRecoveryValueInCombat + mpRecoveryValueUI3,
-            };
+                var mpRecoveryValueNorml = (int)Math.Floor(player.MaxMP * Constants.MPRecoveryRate.Normal);
+                var mpRecoveryValueInCombat = (int)Math.Floor(player.MaxMP * Constants.MPRecoveryRate.InCombat);
+                var mpRecoveryValueUI1 = (int)Math.Floor(player.MaxMP * Constants.MPRecoveryRate.UmbralIce1);
+                var mpRecoveryValueUI2 = (int)Math.Floor(player.MaxMP * Constants.MPRecoveryRate.UmbralIce2);
+                var mpRecoveryValueUI3 = (int)Math.Floor(player.MaxMP * Constants.MPRecoveryRate.UmbralIce3);
+
+                this.MPRecoveryAmounts[player.MaxMP] = new int[]
+                {
+                    mpRecoveryValueNorml,
+                    mpRecoveryValueNorml + mpRecoveryValueUI1,
+                    mpRecoveryValueNorml + mpRecoveryValueUI2,
+                    mpRecoveryValueNorml + mpRecoveryValueUI3,
+                    mpRecoveryValueInCombat,
+                    mpRecoveryValueInCombat + mpRecoveryValueUI1,
+                    mpRecoveryValueInCombat + mpRecoveryValueUI2,
+                    mpRecoveryValueInCombat + mpRecoveryValueUI3,
+                };
+            }
+
+            var mpRecoveryAmounts = this.MPRecoveryAmounts[player.MaxMP];
 
             var now = DateTime.Now;
 
@@ -117,10 +128,14 @@
                 var mpRecoveryValue = player.CurrentMP - this.PreviousMP;
 
                 // 算出した回復量と一致する？
-                if (mpRecoveryValues.Any(x => x == mpRecoveryValue))
+                if (mpRecoveryAmounts.Any(x => x == mpRecoveryValue))
                 {
                     this.LastRecoveryDateTime = now;
                     this.NextRecoveryDateTime = this.LastRecoveryDateTime.AddSeconds(Constants.MPRecoverySpan);
+
+#if DEBUG
+                    Trace.WriteLine(string.Format("MPRecovery matched. {0:N0}", mpRecoveryValue));
+#endif
                 }
 
                 #region Logger
@@ -131,14 +146,14 @@
                     var message = string.Empty;
 
                     message += "MaxMP " + player.MaxMP.ToString("N0") + Environment.NewLine;
-                    message += "通常回復       : " + mpRecoveryValues[0].ToString("N0") + Environment.NewLine;
-                    message += "通常回復+UB1   : " + mpRecoveryValues[1].ToString("N0") + Environment.NewLine;
-                    message += "通常回復+UB2   : " + mpRecoveryValues[2].ToString("N0") + Environment.NewLine;
-                    message += "通常回復+UB3   : " + mpRecoveryValues[3].ToString("N0") + Environment.NewLine;
-                    message += "戦闘時回復     : " + mpRecoveryValues[4].ToString("N0") + Environment.NewLine;
-                    message += "戦闘時回復+UB1 : " + mpRecoveryValues[5].ToString("N0") + Environment.NewLine;
-                    message += "戦闘時回復+UB2 : " + mpRecoveryValues[6].ToString("N0") + Environment.NewLine;
-                    message += "戦闘時回復+UB3 : " + mpRecoveryValues[7].ToString("N0") + Environment.NewLine;
+                    message += "通常回復       : " + mpRecoveryAmounts[0].ToString("N0") + Environment.NewLine;
+                    message += "通常回復+UB1   : " + mpRecoveryAmounts[1].ToString("N0") + Environment.NewLine;
+                    message += "通常回復+UB2   : " + mpRecoveryAmounts[2].ToString("N0") + Environment.NewLine;
+                    message += "通常回復+UB3   : " + mpRecoveryAmounts[3].ToString("N0") + Environment.NewLine;
+                    message += "戦闘時回復     : " + mpRecoveryAmounts[4].ToString("N0") + Environment.NewLine;
+                    message += "戦闘時回復+UB1 : " + mpRecoveryAmounts[5].ToString("N0") + Environment.NewLine;
+                    message += "戦闘時回復+UB2 : " + mpRecoveryAmounts[6].ToString("N0") + Environment.NewLine;
+                    message += "戦闘時回復+UB3 : " + mpRecoveryAmounts[7].ToString("N0") + Environment.NewLine;
                     message += "今回の回復量   : " + (player.CurrentMP - this.PreviousMP).ToString("N0");
 
                     Trace.WriteLine(message);
@@ -161,6 +176,10 @@
             {
                 this.LastRecoveryDateTime = now.AddMilliseconds(remain);
                 this.NextRecoveryDateTime = this.LastRecoveryDateTime.AddSeconds(Constants.MPRecoverySpan);
+
+#if DEBUG
+                Trace.WriteLine(string.Format("MPRecovery was over. {0:N0}", remain));
+#endif
             }
 
             if (remain < 0d)

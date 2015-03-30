@@ -4,7 +4,7 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:Utility="clr-namespace:ACT.MPTimer.Utility"
   xmlns:local="clr-namespace:ACT.MPTimer"
-  Title="MPタイマ" 
+  Title="MPTimer" 
   SizeToContent="WidthAndHeight"
   AllowsTransparency="True" WindowStyle="None" Background="Transparent"
   ShowInTaskbar="False"

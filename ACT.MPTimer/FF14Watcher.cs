@@ -12,6 +12,8 @@
     /// </summary>
     public partial class FF14Watcher
     {
+        private static double FFXIVProcessCheckInterval = 10.0d;
+
         /// <summary>
         /// シングルトンインスタンス
         /// </summary>
@@ -26,6 +28,11 @@
         /// 処理中か？
         /// </summary>
         private bool isWorking;
+
+        /// <summary>
+        /// FFXIVプロセスの所在を最後にチェックした日時
+        /// </summary>
+        private DateTime lastCheckDateTime;
 
         /// <summary>
         /// シングルトンインスタンス
@@ -94,6 +101,10 @@
                 return;
             }
 
+#if DEBUG
+            var sw = Stopwatch.StartNew();
+#endif
+
             try
             {
                 this.isWorking = true;
@@ -108,6 +119,11 @@
             }
             finally
             {
+#if DEBUG
+                sw.Stop();
+                Trace.WriteLine(string.Format("Timer elapsed. {0:N0} ticks", sw.Elapsed.Ticks));
+#endif
+
                 this.isWorking = false;
                 this.watchTimer.Start();
             }
@@ -124,13 +140,18 @@
                 return;
             }
 
-#if !DEBUG
             // FF14Processがなければ何もしない
-            if (!FF14PluginHelper.ExistsFFXIVProcess)
+            if ((DateTime.Now - this.lastCheckDateTime).TotalSeconds >= FFXIVProcessCheckInterval)
             {
-                return;
-            }
+                if (FF14PluginHelper.GetFFXIVProcess == null)
+                {
+#if !DEBUG
+                    return;
 #endif
+                }
+
+                this.lastCheckDateTime = DateTime.Now;
+            }
 
             // MP回復スパンを開始する
             this.WacthMPRecovery();
