@@ -71,15 +71,6 @@
             }
         }
 
-        public static bool ExistsFFXIVProcess
-        {
-            get
-            {
-                var ps = Process.GetProcessesByName("ffxiv");
-                return ps != null ? ps.Length > 0 : false;
-            }
-        }
-
         public static Process GetFFXIVProcess
         {
             get
@@ -132,10 +123,10 @@
                 return result;
             }
 
-            dynamic list = pluginScancombat.GetCombatantList();
-            if (list.Count > 0)
+            object[] list = pluginScancombat.GetCombatantList().ToArray();
+            if (list.Length > 0)
             {
-                var item = list[0];
+                var item = (dynamic)list[0];
                 var combatant = new Combatant();
 
                 combatant.ID = (uint)item.ID;
