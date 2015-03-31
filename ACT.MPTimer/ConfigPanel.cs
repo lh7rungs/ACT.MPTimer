@@ -19,6 +19,12 @@
             get { return instance ?? (instance = new ConfigPanel()); }
         }
 
+        private ColorDialog colorDialog = new ColorDialog()
+        {
+            AnyColor = true,
+            FullOpen = true,
+        };
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -26,6 +32,8 @@
         {
             this.InitializeComponent();
             this.Dock = DockStyle.Fill;
+
+            this.ProgressBarShiftTimeNumericUpDown.Maximum = (decimal)Settings.Default.MPRecoveryInterval;
 
             TraceUtility.LogTextBox = this.LogRichTextBox;
         }
@@ -89,6 +97,26 @@
                     FF14Watcher.Initialize();
                 }
             };
+
+            this.ProgressBarShiftColorButton.Click += (s1, e1) =>
+            {
+                var button = s1 as Button;
+                this.colorDialog.Color = button.BackColor;
+                if (this.colorDialog.ShowDialog(this.ParentForm) == DialogResult.OK)
+                {
+                    button.BackColor = this.colorDialog.Color;
+                }
+            };
+
+            this.ProgressBarShiftOutlineColorButton.Click += (s1, e1) =>
+            {
+                var button = s1 as Button;
+                this.colorDialog.Color = button.BackColor;
+                if (this.colorDialog.ShowDialog(this.ParentForm) == DialogResult.OK)
+                {
+                    button.BackColor = this.colorDialog.Color;
+                }
+            };
         }
 
         /// <summary>
@@ -112,6 +140,10 @@
             this.ClickThroughCheckBox.Checked = Settings.Default.ClickThrough;
 
             this.MPRefreshRateNumericUpDown.Value = Settings.Default.ParameterRefreshRate;
+
+            this.ProgressBarShiftTimeNumericUpDown.Value = (decimal)Settings.Default.ProgressBarShiftTime;
+            this.ProgressBarShiftColorButton.BackColor = Settings.Default.ProgressBarShiftColor;
+            this.ProgressBarShiftOutlineColorButton.BackColor = Settings.Default.ProgressBarOutlineShiftColor;
         }
 
         /// <summary>
@@ -134,6 +166,10 @@
             Settings.Default.ClickThrough = this.ClickThroughCheckBox.Checked;
 
             Settings.Default.ParameterRefreshRate = (int)this.MPRefreshRateNumericUpDown.Value;
+
+            Settings.Default.ProgressBarShiftTime = (double)this.ProgressBarShiftTimeNumericUpDown.Value;
+            Settings.Default.ProgressBarShiftColor = this.ProgressBarShiftColorButton.BackColor;
+            Settings.Default.ProgressBarOutlineShiftColor = this.ProgressBarShiftOutlineColorButton.BackColor;
 
             Settings.Default.Save();
         }

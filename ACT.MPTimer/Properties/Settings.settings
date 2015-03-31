@@ -50,5 +50,14 @@
     <Setting Name="MPRecoveryInterval" Type="System.Double" Scope="User">
       <Value Profile="(Default)">3</Value>
     </Setting>
+    <Setting Name="ProgressBarShiftColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">OrangeRed</Value>
+    </Setting>
+    <Setting Name="ProgressBarOutlineShiftColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">OrangeRed</Value>
+    </Setting>
+    <Setting Name="ProgressBarShiftTime" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

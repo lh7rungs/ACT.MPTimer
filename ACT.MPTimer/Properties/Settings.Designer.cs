@@ -214,5 +214,41 @@ namespace ACT.MPTimer.Properties {
                 this["MPRecoveryInterval"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("OrangeRed")]
+        public global::System.Drawing.Color ProgressBarShiftColor {
+            get {
+                return ((global::System.Drawing.Color)(this["ProgressBarShiftColor"]));
+            }
+            set {
+                this["ProgressBarShiftColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("OrangeRed")]
+        public global::System.Drawing.Color ProgressBarOutlineShiftColor {
+            get {
+                return ((global::System.Drawing.Color)(this["ProgressBarOutlineShiftColor"]));
+            }
+            set {
+                this["ProgressBarOutlineShiftColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double ProgressBarShiftTime {
+            get {
+                return ((double)(this["ProgressBarShiftTime"]));
+            }
+            set {
+                this["ProgressBarShiftTime"] = value;
+            }
+        }
     }
 }
