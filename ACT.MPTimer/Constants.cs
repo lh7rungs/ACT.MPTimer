@@ -1,18 +1,17 @@
-﻿namespace ACT.MPTimer
+﻿using ACT.MPTimer.Properties;
+
+namespace ACT.MPTimer
 {
     public static class Constants
     {
         /// <summary>
         /// MP回復周期
-        /// 
-        /// ET 1分毎
-        /// ET 24h = LT 70m
-        /// ET 1m  = LT 70 / 24 → 2.91666... 
+        /// エオルゼアタイムの1分とは無関係に実時間3秒周期である
         /// </summary>
-        public const double MPRecoverySpan = 70.0d / 24.0d;
+        public static readonly double MPRecoverySpan = Settings.Default.MPRecoveryInterval;
 
         /// <summary>
-        /// MP回復割合
+        /// MP回復割
         /// </summary>
         public static class MPRecoveryRate
         {
