@@ -130,11 +130,14 @@
                 // 算出した回復量と一致する？
                 if (mpRecoveryAmounts.Any(x => x == mpRecoveryValue))
                 {
+#if DEBUG
+                    var interval = (now - this.LastRecoveryDateTime).TotalMilliseconds;
+#endif
                     this.LastRecoveryDateTime = now;
                     this.NextRecoveryDateTime = this.LastRecoveryDateTime.AddSeconds(Constants.MPRecoverySpan);
 
 #if DEBUG
-                    Trace.WriteLine(string.Format("MPRecovery matched. {0:N0}", mpRecoveryValue));
+                    Trace.WriteLine(string.Format("MPRecovery matched. MP={0:N0}, Interval={1:N0}", mpRecoveryValue, interval));
 #endif
                 }
 

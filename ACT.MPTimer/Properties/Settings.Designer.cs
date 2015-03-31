@@ -202,5 +202,17 @@ namespace ACT.MPTimer.Properties {
                 this["ParameterRefreshRate"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public double MPRecoveryInterval {
+            get {
+                return ((double)(this["MPRecoveryInterval"]));
+            }
+            set {
+                this["MPRecoveryInterval"] = value;
+            }
+        }
     }
 }

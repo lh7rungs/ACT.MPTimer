@@ -102,7 +102,7 @@
             }
 
 #if DEBUG
-            var sw = Stopwatch.StartNew();
+//          var sw = Stopwatch.StartNew();
 #endif
 
             try
@@ -120,8 +120,8 @@
             finally
             {
 #if DEBUG
-                sw.Stop();
-                Trace.WriteLine(string.Format("Timer elapsed. {0:N0} ticks", sw.Elapsed.Ticks));
+//              sw.Stop();
+//              Trace.WriteLine(string.Format("Timer elapsed. {0:N0} ticks", sw.Elapsed.Ticks));
 #endif
 
                 this.isWorking = false;
