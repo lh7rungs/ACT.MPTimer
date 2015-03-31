@@ -101,7 +101,7 @@
 
             Initialize();
 
-#if !DEBUG
+#if DEBUG
             result = new Combatant();
             result.Job = 25;
             result.CurrentMP = 1000;
