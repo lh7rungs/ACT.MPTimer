@@ -24,6 +24,13 @@
         private bool inCombat;
         private bool visible;
 
+        private SolidColorBrush progressBarForegroundDefault;
+        private SolidColorBrush progressBarBackgroundDefault;
+        private SolidColorBrush progressBarStrokeDefault;
+        private SolidColorBrush progressBarForegroundShift;
+        private SolidColorBrush progressBarBackgroundShift;
+        private SolidColorBrush progressBarStrokeShift;
+
         public MPTimerWindowViewModel()
         {
             this.ReloadSettings();
@@ -94,11 +101,32 @@
                         (Constants.MPRecoverySpan * 1000d);
 
                     this.ProgressBarForegroundWidth =
-                        (double)Settings.Default.ProgressBarSize.Width * rateOfRecovery; 
+                        (double)Settings.Default.ProgressBarSize.Width * rateOfRecovery;
 
                     // 残り秒数の表示を編集する
                     this.TimeToRecoveryText =
                         (this.timeToRecovery / 1000d).ToString("N1");
+
+                    // 残り秒数でプログレスバーの色を変更する
+                    if (Settings.Default.ProgressBarShiftTime > 0.0d)
+                    {
+                        if (this.timeToRecovery <= (Settings.Default.ProgressBarShiftTime * 1000d))
+                        {
+                            this.progressBarForeground = this.progressBarForegroundShift;
+                            this.progressBarBackground = this.progressBarBackgroundShift;
+                            this.progressBarStroke = this.progressBarStrokeShift;
+                        }
+                        else
+                        {
+                            this.progressBarForeground = this.progressBarForegroundDefault;
+                            this.progressBarBackground = this.progressBarBackgroundDefault;
+                            this.progressBarStroke = this.progressBarStrokeDefault;
+                        }
+
+                        this.RaisePropertyChanged("ProgressBarForeground");
+                        this.RaisePropertyChanged("ProgressBarBackground");
+                        this.RaisePropertyChanged("ProgressBarStroke");
+                    }
                 }
             }
         }
@@ -131,7 +159,7 @@
 
         public double ProgressBarForegroundWidth
         {
-            get {return this.progressBarForegroundWidth;}
+            get { return this.progressBarForegroundWidth; }
             set
             {
                 if (this.progressBarForegroundWidth != value)
@@ -194,20 +222,32 @@
         {
             this.opacity = (100.0d - Settings.Default.OverlayOpacity) / 100.0d;
 
-            this.progressBarForeground = new SolidColorBrush(Settings.Default.ProgressBarColor.ToWPF());
-            this.progressBarBackground = new SolidColorBrush(this.progressBarForeground.Color.ChangeBrightness(0.4d));
-            this.progressBarStroke = new SolidColorBrush(Settings.Default.ProgressBarOutlineColor.ToWPF());
+            this.progressBarForegroundDefault = new SolidColorBrush(Settings.Default.ProgressBarColor.ToWPF());
+            this.progressBarBackgroundDefault = new SolidColorBrush(this.progressBarForegroundDefault.Color.ChangeBrightness(0.4d));
+            this.progressBarStrokeDefault = new SolidColorBrush(Settings.Default.ProgressBarOutlineColor.ToWPF());
+            this.progressBarForegroundShift = new SolidColorBrush(Settings.Default.ProgressBarShiftColor.ToWPF());
+            this.progressBarBackgroundShift = new SolidColorBrush(this.progressBarForegroundShift.Color.ChangeBrightness(0.4d));
+            this.progressBarStrokeShift = new SolidColorBrush(Settings.Default.ProgressBarOutlineShiftColor.ToWPF());
+
             this.fontFill = new SolidColorBrush(Settings.Default.FontColor.ToWPF());
             this.fontStroke = new SolidColorBrush(Settings.Default.FontOutlineColor.ToWPF());
 
-            this.progressBarForeground.Freeze();
-            this.progressBarBackground.Freeze();
-            this.progressBarStroke.Freeze();
+            this.progressBarForegroundDefault.Freeze();
+            this.progressBarBackgroundDefault.Freeze();
+            this.progressBarStrokeDefault.Freeze();
+            this.progressBarForegroundShift.Freeze();
+            this.progressBarBackgroundShift.Freeze();
+            this.progressBarStrokeShift.Freeze();
             this.fontFill.Freeze();
             this.fontStroke.Freeze();
 
+            this.progressBarForeground = this.progressBarForegroundDefault;
+            this.progressBarBackground = this.progressBarBackgroundDefault;
+            this.progressBarStroke = this.progressBarStrokeDefault;
+
             this.RaisePropertyChanged("Opacity");
             this.RaisePropertyChanged("ProgressBarForegroundWidth");
+            this.RaisePropertyChanged("ProgressBarForeground");
             this.RaisePropertyChanged("ProgressBarBackground");
             this.RaisePropertyChanged("ProgressBarStroke");
             this.RaisePropertyChanged("ProgressBarWidth");
