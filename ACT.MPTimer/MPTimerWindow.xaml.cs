@@ -48,9 +48,6 @@
 
             this.Loaded += (s, e) =>
             {
-                this.Left = Settings.Default.OverlayLeft;
-                this.Top = Settings.Default.OverlayTop;
-
                 var timer = new DispatcherTimer()
                 {
                     Interval = new TimeSpan(0, 0, 0, 3, 0),
