@@ -41,6 +41,27 @@
 #endif
         }
 
+
+        public double Left
+        {
+            get { return (double)Settings.Default.OverlayLeft; }
+            set
+            {
+                Settings.Default.OverlayLeft = (int)value;
+                this.RaisePropertyChanged();
+            }
+        }
+
+        public double Top
+        {
+            get { return (double)Settings.Default.OverlayTop; }
+            set
+            {
+                Settings.Default.OverlayTop = (int)value;
+                this.RaisePropertyChanged();
+            }
+        }
+
         public double Opacity
         {
             get

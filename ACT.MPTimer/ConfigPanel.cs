@@ -117,6 +117,11 @@
                     button.BackColor = this.colorDialog.Color;
                 }
             };
+
+            this.OverlayLocationXNumericUpDown.DataBindings.Add(
+                new Binding("Value", MPTimerWindow.Default.ViewModel, "Left", false, DataSourceUpdateMode.OnPropertyChanged));
+            this.OverlayLocationYNumericUpDown.DataBindings.Add(
+                new Binding("Value", MPTimerWindow.Default.ViewModel, "Top", false, DataSourceUpdateMode.OnPropertyChanged));
         }
 
         /// <summary>

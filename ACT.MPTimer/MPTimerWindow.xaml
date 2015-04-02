@@ -12,7 +12,9 @@
   TextOptions.TextFormattingMode="Ideal"
   TextOptions.TextHintingMode="Animated"
   TextOptions.TextRenderingMode="ClearType"
-  Opacity="{Binding Opacity}">
+  Opacity="{Binding Opacity}" 
+  Left="{Binding Left, Mode=TwoWay}" 
+  Top="{Binding Top, Mode=TwoWay}">
 
   <Window.DataContext>
     <local:MPTimerWindowViewModel />
