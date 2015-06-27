@@ -50,6 +50,7 @@
             if (player == null)
             {
                 vm.Visible = false;
+                EnochianTimerWindow.Default.ViewModel.Visible = false;
                 return;
             }
 

@@ -65,12 +65,17 @@
     <Compile Include="FF14PluginHelper.cs" />
     <Compile Include="FF14PluginHelper.Extension.cs" />
     <Compile Include="FF14Watcher.cs" />
+    <Compile Include="FF14Watcher.EnochianTimer.cs" />
     <Compile Include="FF14Watcher.MPWatcher.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="MPTimerPlugin.cs" />
+    <Compile Include="EnochianTimerWindow.xaml.cs">
+      <DependentUpon>EnochianTimerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MPTimerWindow.xaml.cs">
       <DependentUpon>MPTimerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EnochianTimerWindowViewModel.cs" />
     <Compile Include="MPTimerWindowViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -103,6 +108,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="EnochianTimerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MPTimerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -59,11 +59,15 @@
 
                     Settings.Default.OverlayTop = (int)MPTimerWindow.Default.Top;
                     Settings.Default.OverlayLeft = (int)MPTimerWindow.Default.Left;
+                    Settings.Default.EnochianOverlayTop = (int)EnochianTimerWindow.Default.Top;
+                    Settings.Default.EnochianOverlayLeft = (int)EnochianTimerWindow.Default.Left;
 
                     this.SaveSettings();
 
                     MPTimerWindow.Reload();
                     MPTimerWindow.Default.Show();
+                    EnochianTimerWindow.Reload();
+                    EnochianTimerWindow.Default.Show();
 
                     Trace.WriteLine("Change settings.");
                 }
@@ -84,11 +88,15 @@
 
                     MPTimerWindow.Default.Top = Settings.Default.OverlayTop;
                     MPTimerWindow.Default.Left = Settings.Default.OverlayLeft;
+                    EnochianTimerWindow.Default.Top = Settings.Default.EnochianOverlayTop;
+                    EnochianTimerWindow.Default.Left = Settings.Default.EnochianOverlayLeft;
 
                     this.LoadSettings();
 
                     MPTimerWindow.Reload();
                     MPTimerWindow.Default.Show();
+                    EnochianTimerWindow.Reload();
+                    EnochianTimerWindow.Default.Show();
 
                     Trace.WriteLine("Reset settings.");
                 }
@@ -118,10 +126,34 @@
                 }
             };
 
+            this.EnochianBarShiftColorButton.Click += (s1, e1) =>
+            {
+                var button = s1 as Button;
+                this.colorDialog.Color = button.BackColor;
+                if (this.colorDialog.ShowDialog(this.ParentForm) == DialogResult.OK)
+                {
+                    button.BackColor = this.colorDialog.Color;
+                }
+            };
+
+            this.EnochianBarShiftOutlineColorButton.Click += (s1, e1) =>
+            {
+                var button = s1 as Button;
+                this.colorDialog.Color = button.BackColor;
+                if (this.colorDialog.ShowDialog(this.ParentForm) == DialogResult.OK)
+                {
+                    button.BackColor = this.colorDialog.Color;
+                }
+            };
+
             this.OverlayLocationXNumericUpDown.DataBindings.Add(
                 new Binding("Value", MPTimerWindow.Default.ViewModel, "Left", false, DataSourceUpdateMode.OnPropertyChanged));
             this.OverlayLocationYNumericUpDown.DataBindings.Add(
                 new Binding("Value", MPTimerWindow.Default.ViewModel, "Top", false, DataSourceUpdateMode.OnPropertyChanged));
+            this.EnochianXNumericUpDown.DataBindings.Add(
+                new Binding("Value", EnochianTimerWindow.Default.ViewModel, "Left", false, DataSourceUpdateMode.OnPropertyChanged));
+            this.EnochianYNumericUpDown.DataBindings.Add(
+                new Binding("Value", EnochianTimerWindow.Default.ViewModel, "Top", false, DataSourceUpdateMode.OnPropertyChanged));
         }
 
         /// <summary>
@@ -137,6 +169,14 @@
             this.VisualSetting.BarSize = Settings.Default.ProgressBarSize;
             this.VisualSetting.RefreshSampleImage();
 
+            this.EnochianVisualSetting.BarColor = Settings.Default.EnochianProgressBarColor;
+            this.EnochianVisualSetting.BarOutlineColor = Settings.Default.EnochianProgressBarOutlineColor;
+            this.EnochianVisualSetting.TextFont = Settings.Default.EnochianFont;
+            this.EnochianVisualSetting.FontColor = Settings.Default.EnochianFontColor;
+            this.EnochianVisualSetting.FontOutlineColor = Settings.Default.EnochianFontOutlineColor;
+            this.EnochianVisualSetting.BarSize = Settings.Default.EnochianProgressBarSize;
+            this.EnochianVisualSetting.RefreshSampleImage();
+
             this.TokaRitsuNumericUpDown.Value = Settings.Default.OverlayOpacity;
 
             this.CountInCombatCheckBox.Checked = Settings.Default.CountInCombat;
@@ -149,6 +189,10 @@
             this.ProgressBarShiftTimeNumericUpDown.Value = (decimal)Settings.Default.ProgressBarShiftTime;
             this.ProgressBarShiftColorButton.BackColor = Settings.Default.ProgressBarShiftColor;
             this.ProgressBarShiftOutlineColorButton.BackColor = Settings.Default.ProgressBarOutlineShiftColor;
+
+            this.EnochianBarShiftNumericUpDown.Value = (decimal)Settings.Default.EnochianProgressBarShiftTime;
+            this.EnochianBarShiftColorButton.BackColor = Settings.Default.EnochianProgressBarShiftColor;
+            this.EnochianBarShiftOutlineColorButton.BackColor = Settings.Default.EnochianProgressBarOutlineShiftColor;
         }
 
         /// <summary>
@@ -163,6 +207,13 @@
             Settings.Default.FontOutlineColor = this.VisualSetting.FontOutlineColor;
             Settings.Default.ProgressBarSize = this.VisualSetting.BarSize;
 
+            Settings.Default.EnochianProgressBarColor = this.EnochianVisualSetting.BarColor;
+            Settings.Default.EnochianProgressBarOutlineColor = this.EnochianVisualSetting.BarOutlineColor;
+            Settings.Default.EnochianFont = this.EnochianVisualSetting.TextFont;
+            Settings.Default.EnochianFontColor = this.EnochianVisualSetting.FontColor;
+            Settings.Default.EnochianFontOutlineColor = this.EnochianVisualSetting.FontOutlineColor;
+            Settings.Default.EnochianProgressBarSize = this.EnochianVisualSetting.BarSize;
+
             Settings.Default.OverlayOpacity = (int)this.TokaRitsuNumericUpDown.Value;
 
             Settings.Default.CountInCombat = this.CountInCombatCheckBox.Checked;
@@ -175,6 +226,10 @@
             Settings.Default.ProgressBarShiftTime = (double)this.ProgressBarShiftTimeNumericUpDown.Value;
             Settings.Default.ProgressBarShiftColor = this.ProgressBarShiftColorButton.BackColor;
             Settings.Default.ProgressBarOutlineShiftColor = this.ProgressBarShiftOutlineColorButton.BackColor;
+
+            Settings.Default.EnochianProgressBarShiftTime = (double)this.EnochianBarShiftNumericUpDown.Value;
+            Settings.Default.EnochianProgressBarShiftColor = this.EnochianBarShiftColorButton.BackColor;
+            Settings.Default.EnochianProgressBarOutlineShiftColor = this.EnochianBarShiftOutlineColorButton.BackColor;
 
             Settings.Default.Save();
         }
