@@ -1,5 +1,6 @@
 ﻿namespace ACT.MPTimer
 {
+    using System;
     using System.ComponentModel;
     using System.ComponentModel.Composition;
     using System.Runtime.CompilerServices;
@@ -13,7 +14,6 @@
     public class EnochianTimerWindowViewModel : INotifyPropertyChanged
     {
         private double opacity;
-        private double timeToRecovery = default(double);
         private SolidColorBrush progressBarForeground;
         private SolidColorBrush progressBarBackground;
         private SolidColorBrush progressBarStroke;
@@ -23,6 +23,8 @@
         private string timeToRecoveryText;
         private bool inCombat;
         private bool visible;
+        private DateTime endScheduledDateTime;
+        private DateTime startDateTime;
 
         private SolidColorBrush progressBarForegroundDefault;
         private SolidColorBrush progressBarBackgroundDefault;
@@ -107,48 +109,22 @@
             }
         }
 
-        public double TimeToRecovery
+        public DateTime StartDateTime
         {
-            get { return this.timeToRecovery; }
+            get { return this.startDateTime; }
             set
             {
-                if (this.timeToRecovery != value)
-                {
-                    this.timeToRecovery = value;
+                this.startDateTime = value;
+            }
+        }
 
-                    // プログレスバーの幅を計算する
-                    var rateOfRecovery =
-                        ((Constants.MPRecoverySpan * 1000d) - this.timeToRecovery) /
-                        (Constants.MPRecoverySpan * 1000d);
-
-                    this.ProgressBarForegroundWidth =
-                        (double)Settings.Default.EnochianProgressBarSize.Width * rateOfRecovery;
-
-                    // 残り秒数の表示を編集する
-                    this.TimeToRecoveryText =
-                        (this.timeToRecovery / 1000d).ToString("N1");
-
-                    // 残り秒数でプログレスバーの色を変更する
-                    if (Settings.Default.EnochianProgressBarShiftTime > 0.0d)
-                    {
-                        if (this.timeToRecovery <= (Settings.Default.EnochianProgressBarShiftTime * 1000d))
-                        {
-                            this.progressBarForeground = this.progressBarForegroundShift;
-                            this.progressBarBackground = this.progressBarBackgroundShift;
-                            this.progressBarStroke = this.progressBarStrokeShift;
-                        }
-                        else
-                        {
-                            this.progressBarForeground = this.progressBarForegroundDefault;
-                            this.progressBarBackground = this.progressBarBackgroundDefault;
-                            this.progressBarStroke = this.progressBarStrokeDefault;
-                        }
-
-                        this.RaisePropertyChanged("ProgressBarForeground");
-                        this.RaisePropertyChanged("ProgressBarBackground");
-                        this.RaisePropertyChanged("ProgressBarStroke");
-                    }
-                }
+        public DateTime EndScheduledDateTime
+        {
+            get { return this.endScheduledDateTime; }
+            set
+            {
+                this.endScheduledDateTime = value;
+                this.UpdateProgress();
             }
         }
 
@@ -281,6 +257,37 @@
             this.RaisePropertyChanged("FontFill");
             this.RaisePropertyChanged("FontStroke");
             this.RaisePropertyChanged("FontStrokeThickness");
+        }
+
+        public void UpdateProgress()
+        {
+            var duration = (this.EndScheduledDateTime - this.StartDateTime).TotalSeconds;
+            var durationRemain = (this.EndScheduledDateTime - DateTime.Now).TotalSeconds;
+            var durationRate = durationRemain / duration;
+
+            this.ProgressBarForegroundWidth = (double)Settings.Default.EnochianProgressBarSize.Width * durationRate;
+            this.TimeToRecoveryText = durationRemain.ToString("N1");
+
+            // 残り秒数でプログレスバーの色を変更する
+            if (Settings.Default.EnochianProgressBarShiftTime > 0.0d)
+            {
+                if (durationRemain <= Settings.Default.EnochianProgressBarShiftTime)
+                {
+                    this.progressBarForeground = this.progressBarForegroundShift;
+                    this.progressBarBackground = this.progressBarBackgroundShift;
+                    this.progressBarStroke = this.progressBarStrokeShift;
+                }
+                else
+                {
+                    this.progressBarForeground = this.progressBarForegroundDefault;
+                    this.progressBarBackground = this.progressBarBackgroundDefault;
+                    this.progressBarStroke = this.progressBarStrokeDefault;
+                }
+
+                this.RaisePropertyChanged("ProgressBarForeground");
+                this.RaisePropertyChanged("ProgressBarBackground");
+                this.RaisePropertyChanged("ProgressBarStroke");
+            }
         }
 
         #region Implementation of INotifyPropertyChanged

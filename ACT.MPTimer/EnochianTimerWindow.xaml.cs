@@ -48,6 +48,7 @@
 
             this.Loaded += (s, e) =>
             {
+                // 裏面防止用タイマを開始する
                 var timer = new DispatcherTimer()
                 {
                     Interval = new TimeSpan(0, 0, 0, 3, 0),
@@ -63,6 +64,22 @@
                 };
 
                 timer.Start();
+
+                // プログレスバーの更新タイマを開始する
+                var updateTimer = new DispatcherTimer()
+                {
+                    Interval = new TimeSpan(0, 0, 0, 0, 10),
+                };
+
+                updateTimer.Tick += (s2, e2) =>
+                {
+                    if (this.ViewModel != null)
+                    {
+                        this.ViewModel.UpdateProgress();
+                    }
+                };
+
+                updateTimer.Start();
             };
 
             Trace.WriteLine("New EnochianTimerOverlay.");

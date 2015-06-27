@@ -66,6 +66,9 @@
 
                 instance.watchTimer.Elapsed += instance.watchTimer_Elapsed;
 
+                // エノキアン監視用にイベントを仕込む
+                ActGlobals.oFormActMain.OnLogLineRead += instance.OnLoglineRead;
+
                 // 監視を開始する
                 instance.watchTimer.Start();
             }
@@ -78,6 +81,9 @@
         {
             if (instance != null)
             {
+                // エノキアン監視用のイベントを解除する
+                ActGlobals.oFormActMain.OnLogLineRead -= instance.OnLoglineRead;
+
                 if (instance.watchTimer != null)
                 {
                     instance.watchTimer.Stop();
@@ -102,7 +108,7 @@
             }
 
 #if DEBUG
-//          var sw = Stopwatch.StartNew();
+            //          var sw = Stopwatch.StartNew();
 #endif
 
             try
@@ -120,8 +126,8 @@
             finally
             {
 #if DEBUG
-//              sw.Stop();
-//              Trace.WriteLine(string.Format("Timer elapsed. {0:N0} ticks", sw.Elapsed.Ticks));
+                //              sw.Stop();
+                //              Trace.WriteLine(string.Format("Timer elapsed. {0:N0} ticks", sw.Elapsed.Ticks));
 #endif
 
                 this.isWorking = false;
