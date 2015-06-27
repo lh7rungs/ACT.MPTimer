@@ -43,6 +43,15 @@
 #endif
         }
 
+        public string Label
+        {
+            get { return Settings.Default.EnochianLabel; }
+            set
+            {
+                Settings.Default.EnochianLabel = value;
+                this.RaisePropertyChanged();
+            }
+        }
 
         public double Left
         {
@@ -261,35 +270,51 @@
 
         public void UpdateProgress()
         {
-            if (this.StartDateTime <= DateTime.MinValue ||
-                this.EndScheduledDateTime <= DateTime.MinValue)
-            {
-                this.Visible = false;
-                return;
-            }
-
             var now = DateTime.Now;
 
             var duration = (this.EndScheduledDateTime - this.StartDateTime).TotalSeconds;
+            var durationRate = duration / FF14Watcher.EnochianDuration;
             var durationRemain = (this.EndScheduledDateTime - now).TotalSeconds;
 
             if (durationRemain < 0)
             {
                 durationRemain = 0;
             }
-            
-            var durationRate = durationRemain / duration;
 
-            this.ProgressBarForegroundWidth = (double)Settings.Default.EnochianProgressBarSize.Width * durationRate;
+            var durationRemainRate = durationRemain / duration;
+
+            if (this.StartDateTime <= DateTime.MinValue ||
+                this.EndScheduledDateTime <= DateTime.MinValue)
+            {
+                if (Settings.Default.CountInCombat)
+                {
+                    this.Visible = false;
+                    return;
+                }
+                else
+                {
+#if DEBUG
+                    duration = FF14Watcher.EnochianDuration;
+                    durationRate = duration / FF14Watcher.EnochianDuration;
+                    durationRemain = 15.0d;
+                    durationRemainRate = 0.5d;
+#endif
+                }
+            }
+
+            this.ProgressBarForegroundWidth = (double)Settings.Default.EnochianProgressBarSize.Width * durationRate * durationRemainRate;
 
             if (this.EndScheduledDateTime < now)
             {
                 this.TimeToRecoveryText = "Over";
 
-                if ((now - this.EndScheduledDateTime).TotalSeconds > 1.0d)
+                if (Settings.Default.CountInCombat)
                 {
-                    this.Visible = false;
-                    return;
+                    if ((now - this.EndScheduledDateTime).TotalSeconds > 1.0d)
+                    {
+                        this.Visible = false;
+                        return;
+                    }
                 }
             }
             else

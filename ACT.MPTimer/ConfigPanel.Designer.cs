@@ -49,7 +49,6 @@
             this.LogRichTextBox = new System.Windows.Forms.RichTextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -64,6 +63,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.VisualSetting = new ACT.MPTimer.VisualSettingControl();
             this.label4 = new System.Windows.Forms.Label();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
@@ -78,15 +78,17 @@
             this.label22 = new System.Windows.Forms.Label();
             this.EnochianVisualSetting = new ACT.MPTimer.VisualSettingControl();
             this.label23 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.EnochianLabelTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.TokaRitsuNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CountInCombatNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MPRefreshRateNumericUpDown)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OverlayLocationYNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OverlayLocationXNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ProgressBarShiftTimeNumericUpDown)).BeginInit();
+            this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EnochianYNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.EnochianXNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.EnochianBarShiftNumericUpDown)).BeginInit();
@@ -101,7 +103,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 187);
+            this.label5.Location = new System.Drawing.Point(3, 228);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(41, 12);
             this.label5.TabIndex = 11;
@@ -109,7 +111,7 @@
             // 
             // TokaRitsuNumericUpDown
             // 
-            this.TokaRitsuNumericUpDown.Location = new System.Drawing.Point(163, 183);
+            this.TokaRitsuNumericUpDown.Location = new System.Drawing.Point(163, 224);
             this.TokaRitsuNumericUpDown.Name = "TokaRitsuNumericUpDown";
             this.TokaRitsuNumericUpDown.Size = new System.Drawing.Size(65, 19);
             this.TokaRitsuNumericUpDown.TabIndex = 6;
@@ -122,7 +124,7 @@
             // 
             // ShokikaButton
             // 
-            this.ShokikaButton.Location = new System.Drawing.Point(5, 337);
+            this.ShokikaButton.Location = new System.Drawing.Point(5, 378);
             this.ShokikaButton.Name = "ShokikaButton";
             this.ShokikaButton.Size = new System.Drawing.Size(68, 23);
             this.ShokikaButton.TabIndex = 13;
@@ -132,7 +134,7 @@
             // CountInCombatCheckBox
             // 
             this.CountInCombatCheckBox.AutoSize = true;
-            this.CountInCombatCheckBox.Location = new System.Drawing.Point(163, 208);
+            this.CountInCombatCheckBox.Location = new System.Drawing.Point(163, 249);
             this.CountInCombatCheckBox.Name = "CountInCombatCheckBox";
             this.CountInCombatCheckBox.Size = new System.Drawing.Size(48, 16);
             this.CountInCombatCheckBox.TabIndex = 7;
@@ -142,7 +144,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 212);
+            this.label6.Location = new System.Drawing.Point(3, 253);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(113, 12);
             this.label6.TabIndex = 15;
@@ -151,7 +153,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 258);
+            this.label7.Location = new System.Drawing.Point(3, 299);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(132, 12);
             this.label7.TabIndex = 16;
@@ -161,7 +163,7 @@
             // 
             this.TargetJobComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.TargetJobComboBox.FormattingEnabled = true;
-            this.TargetJobComboBox.Location = new System.Drawing.Point(163, 255);
+            this.TargetJobComboBox.Location = new System.Drawing.Point(163, 296);
             this.TargetJobComboBox.Name = "TargetJobComboBox";
             this.TargetJobComboBox.Size = new System.Drawing.Size(216, 20);
             this.TargetJobComboBox.TabIndex = 9;
@@ -169,7 +171,7 @@
             // CountInCombatNumericUpDown
             // 
             this.CountInCombatNumericUpDown.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.CountInCombatNumericUpDown.Location = new System.Drawing.Point(163, 230);
+            this.CountInCombatNumericUpDown.Location = new System.Drawing.Point(163, 271);
             this.CountInCombatNumericUpDown.Maximum = new decimal(new int[] {
             3600,
             0,
@@ -183,7 +185,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(232, 232);
+            this.label8.Location = new System.Drawing.Point(232, 273);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(138, 12);
             this.label8.TabIndex = 19;
@@ -192,7 +194,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 282);
+            this.label9.Location = new System.Drawing.Point(3, 323);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(64, 12);
             this.label9.TabIndex = 20;
@@ -201,7 +203,7 @@
             // ClickThroughCheckBox
             // 
             this.ClickThroughCheckBox.AutoSize = true;
-            this.ClickThroughCheckBox.Location = new System.Drawing.Point(163, 281);
+            this.ClickThroughCheckBox.Location = new System.Drawing.Point(163, 322);
             this.ClickThroughCheckBox.Name = "ClickThroughCheckBox";
             this.ClickThroughCheckBox.Size = new System.Drawing.Size(48, 16);
             this.ClickThroughCheckBox.TabIndex = 10;
@@ -210,7 +212,7 @@
             // 
             // TekiyoButton
             // 
-            this.TekiyoButton.Location = new System.Drawing.Point(401, 337);
+            this.TekiyoButton.Location = new System.Drawing.Point(401, 378);
             this.TekiyoButton.Name = "TekiyoButton";
             this.TekiyoButton.Size = new System.Drawing.Size(68, 23);
             this.TekiyoButton.TabIndex = 12;
@@ -220,7 +222,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(232, 307);
+            this.label3.Location = new System.Drawing.Point(232, 348);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(20, 12);
             this.label3.TabIndex = 28;
@@ -229,7 +231,7 @@
             // MPRefreshRateNumericUpDown
             // 
             this.MPRefreshRateNumericUpDown.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.MPRefreshRateNumericUpDown.Location = new System.Drawing.Point(163, 303);
+            this.MPRefreshRateNumericUpDown.Location = new System.Drawing.Point(163, 344);
             this.MPRefreshRateNumericUpDown.Maximum = new decimal(new int[] {
             2000,
             0,
@@ -253,7 +255,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 307);
+            this.label10.Location = new System.Drawing.Point(3, 348);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(79, 12);
             this.label10.TabIndex = 26;
@@ -265,11 +267,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LogRichTextBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.LogRichTextBox.Location = new System.Drawing.Point(5, 374);
+            this.LogRichTextBox.Location = new System.Drawing.Point(5, 414);
             this.LogRichTextBox.Name = "LogRichTextBox";
             this.LogRichTextBox.ReadOnly = true;
             this.LogRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.LogRichTextBox.Size = new System.Drawing.Size(791, 347);
+            this.LogRichTextBox.Size = new System.Drawing.Size(791, 307);
             this.LogRichTextBox.TabIndex = 14;
             this.LogRichTextBox.TabStop = false;
             this.LogRichTextBox.Text = "";
@@ -284,7 +286,7 @@
             this.tabControl1.Location = new System.Drawing.Point(5, 7);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(791, 170);
+            this.tabControl1.Size = new System.Drawing.Size(791, 211);
             this.tabControl1.TabIndex = 42;
             // 
             // tabPage1
@@ -310,30 +312,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "MP Timer";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.label16);
-            this.tabPage2.Controls.Add(this.label17);
-            this.tabPage2.Controls.Add(this.label18);
-            this.tabPage2.Controls.Add(this.EnochianYNumericUpDown);
-            this.tabPage2.Controls.Add(this.EnochianXNumericUpDown);
-            this.tabPage2.Controls.Add(this.label19);
-            this.tabPage2.Controls.Add(this.EnochianBarShiftOutlineColorButton);
-            this.tabPage2.Controls.Add(this.EnochianBarShiftColorButton);
-            this.tabPage2.Controls.Add(this.label20);
-            this.tabPage2.Controls.Add(this.label21);
-            this.tabPage2.Controls.Add(this.EnochianBarShiftNumericUpDown);
-            this.tabPage2.Controls.Add(this.label22);
-            this.tabPage2.Controls.Add(this.EnochianVisualSetting);
-            this.tabPage2.Controls.Add(this.label23);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(783, 144);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Enochian Timer";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // label15
             // 
@@ -509,6 +487,32 @@
             this.label4.TabIndex = 48;
             this.label4.Text = "オーバーレイの見た目";
             // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.EnochianLabelTextBox);
+            this.tabPage2.Controls.Add(this.label24);
+            this.tabPage2.Controls.Add(this.label16);
+            this.tabPage2.Controls.Add(this.label17);
+            this.tabPage2.Controls.Add(this.label18);
+            this.tabPage2.Controls.Add(this.EnochianYNumericUpDown);
+            this.tabPage2.Controls.Add(this.EnochianXNumericUpDown);
+            this.tabPage2.Controls.Add(this.label19);
+            this.tabPage2.Controls.Add(this.EnochianBarShiftOutlineColorButton);
+            this.tabPage2.Controls.Add(this.EnochianBarShiftColorButton);
+            this.tabPage2.Controls.Add(this.label20);
+            this.tabPage2.Controls.Add(this.label21);
+            this.tabPage2.Controls.Add(this.EnochianBarShiftNumericUpDown);
+            this.tabPage2.Controls.Add(this.label22);
+            this.tabPage2.Controls.Add(this.EnochianVisualSetting);
+            this.tabPage2.Controls.Add(this.label23);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(783, 185);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Enochian Timer";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
             // label16
             // 
             this.label16.AutoSize = true;
@@ -683,6 +687,22 @@
             this.label23.TabIndex = 62;
             this.label23.Text = "オーバーレイの見た目";
             // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(6, 145);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(33, 12);
+            this.label24.TabIndex = 70;
+            this.label24.Text = "ラベル";
+            // 
+            // EnochianLabelTextBox
+            // 
+            this.EnochianLabelTextBox.Location = new System.Drawing.Point(166, 142);
+            this.EnochianLabelTextBox.Name = "EnochianLabelTextBox";
+            this.EnochianLabelTextBox.Size = new System.Drawing.Size(182, 19);
+            this.EnochianLabelTextBox.TabIndex = 71;
+            // 
             // ConfigPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -713,11 +733,11 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OverlayLocationYNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.OverlayLocationXNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ProgressBarShiftTimeNumericUpDown)).EndInit();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EnochianYNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.EnochianXNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.EnochianBarShiftNumericUpDown)).EndInit();
@@ -777,5 +797,7 @@
         private System.Windows.Forms.Label label22;
         private VisualSettingControl EnochianVisualSetting;
         private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox EnochianLabelTextBox;
+        private System.Windows.Forms.Label label24;
     }
 }

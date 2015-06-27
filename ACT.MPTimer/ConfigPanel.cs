@@ -193,6 +193,8 @@
             this.EnochianBarShiftNumericUpDown.Value = (decimal)Settings.Default.EnochianProgressBarShiftTime;
             this.EnochianBarShiftColorButton.BackColor = Settings.Default.EnochianProgressBarShiftColor;
             this.EnochianBarShiftOutlineColorButton.BackColor = Settings.Default.EnochianProgressBarOutlineShiftColor;
+
+            this.EnochianLabelTextBox.Text = Settings.Default.EnochianLabel;
         }
 
         /// <summary>
@@ -230,6 +232,8 @@
             Settings.Default.EnochianProgressBarShiftTime = (double)this.EnochianBarShiftNumericUpDown.Value;
             Settings.Default.EnochianProgressBarShiftColor = this.EnochianBarShiftColorButton.BackColor;
             Settings.Default.EnochianProgressBarOutlineShiftColor = this.EnochianBarShiftOutlineColorButton.BackColor;
+
+            Settings.Default.EnochianLabel = this.EnochianLabelTextBox.Text;
 
             Settings.Default.Save();
         }
