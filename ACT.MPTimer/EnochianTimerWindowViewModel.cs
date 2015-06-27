@@ -261,12 +261,41 @@
 
         public void UpdateProgress()
         {
+            if (this.StartDateTime <= DateTime.MinValue ||
+                this.EndScheduledDateTime <= DateTime.MinValue)
+            {
+                this.Visible = false;
+                return;
+            }
+
+            var now = DateTime.Now;
+
             var duration = (this.EndScheduledDateTime - this.StartDateTime).TotalSeconds;
-            var durationRemain = (this.EndScheduledDateTime - DateTime.Now).TotalSeconds;
+            var durationRemain = (this.EndScheduledDateTime - now).TotalSeconds;
+
+            if (durationRemain < 0)
+            {
+                durationRemain = 0;
+            }
+            
             var durationRate = durationRemain / duration;
 
             this.ProgressBarForegroundWidth = (double)Settings.Default.EnochianProgressBarSize.Width * durationRate;
-            this.TimeToRecoveryText = durationRemain.ToString("N1");
+
+            if (this.EndScheduledDateTime < now)
+            {
+                this.TimeToRecoveryText = "Over";
+
+                if ((now - this.EndScheduledDateTime).TotalSeconds > 1.0d)
+                {
+                    this.Visible = false;
+                    return;
+                }
+            }
+            else
+            {
+                this.TimeToRecoveryText = durationRemain.ToString("N1");
+            }
 
             // 残り秒数でプログレスバーの色を変更する
             if (Settings.Default.EnochianProgressBarShiftTime > 0.0d)
@@ -288,6 +317,8 @@
                 this.RaisePropertyChanged("ProgressBarBackground");
                 this.RaisePropertyChanged("ProgressBarStroke");
             }
+
+            this.Visible = true;
         }
 
         #region Implementation of INotifyPropertyChanged

@@ -45,13 +45,12 @@
         public void WacthMPRecovery()
         {
             var vm = MPTimerWindow.Default.ViewModel;
-            var enochianVm = EnochianTimerWindow.Default.ViewModel;
 
             var player = FF14PluginHelper.GetCombatantPlayer();
             if (player == null)
             {
                 vm.Visible = false;
-                enochianVm.Visible = false;
+                EnochianTimerWindow.Default.ViewModel.Visible = false;
                 return;
             }
 
@@ -59,7 +58,6 @@
             if (Settings.Default.TargetJobId != 0)
             {
                 vm.Visible = player.Job == Settings.Default.TargetJobId;
-                enochianVm.Visible = vm.Visible;
                 if (!vm.Visible)
                 {
                     return;
@@ -68,7 +66,6 @@
             else
             {
                 vm.Visible = true;
-                enochianVm.Visible = true;
             }
 
             // 戦闘中のみ稼働させる？
@@ -90,13 +87,11 @@
                         Settings.Default.CountInCombatSpan)
                     {
                         vm.InCombat = false;
-                        enochianVm.InCombat = false;
                     }
                 }
                 else
                 {
                     vm.InCombat = true;
-                    enochianVm.InCombat = true;
                 }
             }
 
