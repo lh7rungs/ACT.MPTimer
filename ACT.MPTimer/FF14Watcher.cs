@@ -66,8 +66,8 @@
 
                 instance.watchTimer.Elapsed += instance.watchTimer_Elapsed;
 
-                // エノキアン監視用にイベントを仕込む
-                ActGlobals.oFormActMain.OnLogLineRead += instance.OnLoglineRead;
+                // エノキアンタイマーを開始する
+                instance.StartEnochianTimer();
 
                 // 監視を開始する
                 instance.watchTimer.Start();
@@ -81,8 +81,8 @@
         {
             if (instance != null)
             {
-                // エノキアン監視用のイベントを解除する
-                ActGlobals.oFormActMain.OnLogLineRead -= instance.OnLoglineRead;
+                // エノキアンタイマーを終了する
+                instance.EndEnochianTimer();
 
                 if (instance.watchTimer != null)
                 {

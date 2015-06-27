@@ -1,8 +1,12 @@
 ﻿namespace ACT.MPTimer
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Threading;
+    using System.Threading.Tasks;
 
+    using ACT.MPTimer.Properties;
     using Advanced_Combat_Tracker;
 
     /// <summary>
@@ -13,12 +17,12 @@
         /// <summary>
         /// エノキアンの効果期間
         /// </summary>
-        private const double EnochianDuration = 30.0d;
+        public const double EnochianDuration = 30.0d;
 
         /// <summary>
         /// エノキアンの延長時の効果期間の劣化量
         /// </summary>
-        private const double EnochianDegradationSecondsExtending = 5.0d;
+        public const double EnochianDegradationSecondsExtending = 5.0d;
 
         /// <summary>
         /// エノキアン効果中か？
@@ -36,6 +40,49 @@
         private long updateEnchianCount;
 
         /// <summary>
+        /// ログキュー
+        /// </summary>
+        private Queue<string> logQueue = new Queue<string>();
+
+        /// <summary>
+        /// エノキアンタイマータスク
+        /// </summary>
+        private Task enochianTimerTask;
+
+        /// <summary>
+        /// エノキアンタイマー停止フラグ
+        /// </summary>
+        private bool enochianTimerStop;
+
+        /// <summary>
+        /// エノキアンタイマーを開始する
+        /// </summary>
+        private void StartEnochianTimer()
+        {
+            ActGlobals.oFormActMain.OnLogLineRead += this.OnLoglineRead;
+            this.logQueue.Clear();
+            this.enochianTimerStop = false;
+            this.enochianTimerTask = new Task(this.AnalyseLogLinesToEnochian);
+            this.enochianTimerTask.Start();
+        }
+
+        /// <summary>
+        /// エノキアンタイマーを終了する
+        /// </summary>
+        private void EndEnochianTimer()
+        {
+            ActGlobals.oFormActMain.OnLogLineRead -= this.OnLoglineRead;
+
+            if (this.enochianTimerTask != null)
+            {
+                this.enochianTimerStop = true;
+                this.enochianTimerTask.Wait();
+                this.enochianTimerTask.Dispose();
+                this.enochianTimerTask = null;
+            }
+        }
+
+        /// <summary>
         ///  Logline Read
         /// </summary>
         /// <param name="isImport">インポートログか？</param>
@@ -45,6 +92,52 @@
             LogLineEventArgs logInfo)
         {
             if (isImport)
+            {
+                return;
+            }
+
+            lock (this.logQueue)
+            {
+                this.logQueue.Enqueue(logInfo.logLine);
+            }
+        }
+
+        /// <summary>
+        /// エノキアンタイマー向けにログを分析する
+        /// </summary>
+        private void AnalyseLogLinesToEnochian()
+        {
+            while (true)
+            {
+                if (this.enochianTimerStop)
+                {
+                    break;
+                }
+
+                var log = string.Empty;
+
+                lock (this.logQueue)
+                {
+                    if (this.logQueue.Count > 0)
+                    {
+                        log = this.logQueue.Dequeue();
+                    }
+                }
+
+                this.AnalyzeLogLineToEnochian(log);
+
+                Thread.Sleep(Settings.Default.ParameterRefreshRate);
+            }
+        }
+
+        /// <summary>
+        /// エノキアンタイマー向けにログを分析する
+        /// </summary>
+        /// <param name="log">ログ</param>
+        private void AnalyzeLogLineToEnochian(
+            string log)
+        {
+            if (string.IsNullOrWhiteSpace(log))
             {
                 return;
             }
@@ -67,8 +160,6 @@
             var machingTextToUmbralIce3Off = player.Name + "の「アンブラルブリザードIII」が切れた。";
             var machingTextToBlizzard4 = player.Name + "の「ブリザジャ」";
 
-            var log = logInfo.logLine;
-
             if (!log.Contains(player.Name))
             {
                 return;
@@ -77,14 +168,9 @@
             // エノキアンON？
             if (log.Contains(machingTextToEnochianOn))
             {
-                // 既にエノキアン中でなければエノキアンの更新回数をクリアする
-                if (!this.inEnochian)
-                {
-                    this.updateEnchianCount = 0;
-                    this.UpdateEnochian();
-                }
-
                 this.inEnochian = true;
+                this.updateEnchianCount = 0;
+                this.UpdateEnochian();
 
                 Trace.WriteLine("Enochian On.");
                 return;

@@ -31,7 +31,7 @@
       Grid.Row="0"
       HorizontalAlignment="Left" 
       VerticalAlignment="Top"
-      Margin="0,0,3,0" 
+      Margin="2,0,0,0" 
       TextWrapping="NoWrap"
       Fill="{Binding FontFill}"
       Stroke="{Binding FontStroke}"
@@ -40,7 +40,7 @@
       FontSize="{Binding FontSize}"
       FontStyle="{Binding FontStyle}"
       FontWeight="{Binding FontWeight}"
-      Text="Enochian">
+      Text="{Binding Label}">
 
       <Utility:OutlineTextBlock.Effect>
         <DropShadowEffect

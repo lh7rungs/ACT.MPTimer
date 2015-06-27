@@ -382,5 +382,17 @@ namespace ACT.MPTimer.Properties {
                 this["EnochianProgressBarShiftTime"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Enochian")]
+        public string EnochianLabel {
+            get {
+                return ((string)(this["EnochianLabel"]));
+            }
+            set {
+                this["EnochianLabel"] = value;
+            }
+        }
     }
 }
