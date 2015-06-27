@@ -41,8 +41,9 @@
                 // アップデートを確認する
                 this.Update();
 
-                // MP回復タイミングFormを表示する
+                // オーバーレイを表示する
                 MPTimerWindow.Default.Show();
+                EnochianTimerWindow.Default.Show();
 
                 // FF14監視スレッドを開始する
                 FF14Watcher.Initialize();
@@ -77,10 +78,13 @@
                 // Windowの位置を保存する
                 Settings.Default.OverlayTop = (int)MPTimerWindow.Default.Top;
                 Settings.Default.OverlayLeft = (int)MPTimerWindow.Default.Left;
+                Settings.Default.EnochianOverlayTop = (int)EnochianTimerWindow.Default.Top;
+                Settings.Default.EnochianOverlayLeft = (int)EnochianTimerWindow.Default.Left;
                 Settings.Default.Save();
 
                 FF14Watcher.Deinitialize();
                 MPTimerWindow.Default.Close();
+                EnochianTimerWindow.Default.Close();
 
                 this.PluginStatusLabel.Text = "Plugin Exited";
             }

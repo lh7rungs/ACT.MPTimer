@@ -250,5 +250,137 @@ namespace ACT.MPTimer.Properties {
                 this["ProgressBarShiftTime"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("OrangeRed")]
+        public global::System.Drawing.Color EnochianProgressBarColor {
+            get {
+                return ((global::System.Drawing.Color)(this["EnochianProgressBarColor"]));
+            }
+            set {
+                this["EnochianProgressBarColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("メイリオ, 9.75pt")]
+        public global::System.Drawing.Font EnochianFont {
+            get {
+                return ((global::System.Drawing.Font)(this["EnochianFont"]));
+            }
+            set {
+                this["EnochianFont"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int EnochianOverlayLeft {
+            get {
+                return ((int)(this["EnochianOverlayLeft"]));
+            }
+            set {
+                this["EnochianOverlayLeft"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int EnochianOverlayTop {
+            get {
+                return ((int)(this["EnochianOverlayTop"]));
+            }
+            set {
+                this["EnochianOverlayTop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LightGoldenrodYellow")]
+        public global::System.Drawing.Color EnochianFontColor {
+            get {
+                return ((global::System.Drawing.Color)(this["EnochianFontColor"]));
+            }
+            set {
+                this["EnochianFontColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LightGoldenrodYellow")]
+        public global::System.Drawing.Color EnochianFontOutlineColor {
+            get {
+                return ((global::System.Drawing.Color)(this["EnochianFontOutlineColor"]));
+            }
+            set {
+                this["EnochianFontOutlineColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("OrangeRed")]
+        public global::System.Drawing.Color EnochianProgressBarOutlineColor {
+            get {
+                return ((global::System.Drawing.Color)(this["EnochianProgressBarOutlineColor"]));
+            }
+            set {
+                this["EnochianProgressBarOutlineColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("110, 7")]
+        public global::System.Drawing.Size EnochianProgressBarSize {
+            get {
+                return ((global::System.Drawing.Size)(this["EnochianProgressBarSize"]));
+            }
+            set {
+                this["EnochianProgressBarSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("OrangeRed")]
+        public global::System.Drawing.Color EnochianProgressBarShiftColor {
+            get {
+                return ((global::System.Drawing.Color)(this["EnochianProgressBarShiftColor"]));
+            }
+            set {
+                this["EnochianProgressBarShiftColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("OrangeRed")]
+        public global::System.Drawing.Color EnochianProgressBarOutlineShiftColor {
+            get {
+                return ((global::System.Drawing.Color)(this["EnochianProgressBarOutlineShiftColor"]));
+            }
+            set {
+                this["EnochianProgressBarOutlineShiftColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double EnochianProgressBarShiftTime {
+            get {
+                return ((double)(this["EnochianProgressBarShiftTime"]));
+            }
+            set {
+                this["EnochianProgressBarShiftTime"] = value;
+            }
+        }
     }
 }
