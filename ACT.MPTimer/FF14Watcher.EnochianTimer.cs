@@ -55,11 +55,17 @@
         private bool enochianTimerStop;
 
         /// <summary>
+        /// プレイヤーの名前
+        /// </summary>
+        private string playerName;
+
+        /// <summary>
         /// エノキアンタイマーを開始する
         /// </summary>
         private void StartEnochianTimer()
         {
             ActGlobals.oFormActMain.OnLogLineRead += this.OnLoglineRead;
+            this.playerName = string.Empty;
             this.logQueue.Clear();
             this.enochianTimerStop = false;
             this.enochianTimerTask = new Task(this.AnalyseLogLinesToEnochian);
@@ -150,25 +156,29 @@
                 return;
             }
 
-            // プレイヤ情報を取得する
-            var player = FF14PluginHelper.GetCombatantPlayer();
-            if (player == null)
+            if (string.IsNullOrWhiteSpace(this.playerName) ||
+                log.Contains("Welcome to"))
             {
-                return;
+                // プレイヤ情報を取得する
+                var player = FF14PluginHelper.GetCombatantPlayer();
+                if (player != null)
+                {
+                    this.playerName = player.Name;
+                }
             }
 
             // 各種マッチング用の文字列を生成する
-            var machingTextToEnochianOn = player.Name + "の「エノキアン」";
-            var machingTextToEnochianOff = player.Name + "の「エノキアン」が切れた。";
-            var machingTextToUmbralIce1On = player.Name + "に「アンブラルブリザード」の効果。";
-            var machingTextToUmbralIce2On = player.Name + "に「アンブラルブリザードII」の効果。";
-            var machingTextToUmbralIce3On = player.Name + "に「アンブラルブリザードIII」の効果。";
-            var machingTextToUmbralIce1Off = player.Name + "の「アンブラルブリザード」が切れた。";
-            var machingTextToUmbralIce2Off = player.Name + "の「アンブラルブリザードII」が切れた。";
-            var machingTextToUmbralIce3Off = player.Name + "の「アンブラルブリザードIII」が切れた。";
-            var machingTextToBlizzard4 = player.Name + "の「ブリザジャ」";
+            var machingTextToEnochianOn = this.playerName + "の「エノキアン」";
+            var machingTextToEnochianOff = this.playerName + "の「エノキアン」が切れた。";
+            var machingTextToUmbralIce1On = this.playerName + "に「アンブラルブリザード」の効果。";
+            var machingTextToUmbralIce2On = this.playerName + "に「アンブラルブリザードII」の効果。";
+            var machingTextToUmbralIce3On = this.playerName + "に「アンブラルブリザードIII」の効果。";
+            var machingTextToUmbralIce1Off = this.playerName + "の「アンブラルブリザード」が切れた。";
+            var machingTextToUmbralIce2Off = this.playerName + "の「アンブラルブリザードII」が切れた。";
+            var machingTextToUmbralIce3Off = this.playerName + "の「アンブラルブリザードIII」が切れた。";
+            var machingTextToBlizzard4 = this.playerName + "の「ブリザジャ」";
 
-            if (!log.Contains(player.Name))
+            if (!log.Contains(this.playerName))
             {
                 return;
             }

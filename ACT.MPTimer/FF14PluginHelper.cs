@@ -100,7 +100,7 @@
             var result = default(Combatant);
 
             Initialize();
-
+/*
 #if DEBUG
             result = new Combatant();
             result.Job = 25;
@@ -108,6 +108,7 @@
             result.MaxMP = 5400;
             return result;
 #else
+*/
             if (plugin == null)
             {
                 return result;
@@ -138,7 +139,9 @@
             }
 
             return result;
+/*
 #endif
+*/
         }
 
         public static List<Combatant> GetCombatantList()
