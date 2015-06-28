@@ -116,17 +116,25 @@
 
                 var log = string.Empty;
 
-                lock (this.logQueue)
+                while (true)
                 {
-                    if (this.logQueue.Count > 0)
+                    lock (this.logQueue)
                     {
-                        log = this.logQueue.Dequeue();
+                        if (this.logQueue.Count > 0)
+                        {
+                            log = this.logQueue.Dequeue();
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
+
+                    this.AnalyzeLogLineToEnochian(log);
+                    Thread.Sleep(1);
                 }
 
-                this.AnalyzeLogLineToEnochian(log);
-
-                Thread.Sleep(Settings.Default.ParameterRefreshRate);
+                Thread.Sleep(Settings.Default.ParameterRefreshRate / 2);
             }
         }
 
