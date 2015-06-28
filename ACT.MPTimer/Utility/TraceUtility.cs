@@ -1,6 +1,7 @@
 ﻿namespace ACT.MPTimer.Utility
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
@@ -36,6 +37,8 @@
         public RichTextBox LogTextBox { get; set; }
 
         private string logFile;
+
+        private List<string> logBuffer = new List<string>();
 
         public CustomTraceListener(
             Assembly assembly)
@@ -74,11 +77,26 @@
                     message;
 
                 this.defaultListener.Write(log);
-                File.AppendAllText(this.logFile, log);
 
                 if (this.LogTextBox != null)
                 {
                     this.LogTextBox.AppendText(log);
+                }
+
+                // ログファイルに出力する
+                lock (this.logBuffer)
+                {
+                    this.logBuffer.Add(log);
+
+                    if (this.logBuffer.Count >= 64)
+                    {
+                        foreach (var text in this.logBuffer)
+                        {
+                            File.AppendAllText(this.logFile, text);
+                        }
+
+                        this.logBuffer.Clear();
+                    }
                 }
             }
             catch

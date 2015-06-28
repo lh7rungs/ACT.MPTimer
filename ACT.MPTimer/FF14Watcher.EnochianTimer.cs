@@ -25,6 +25,11 @@
         public const double EnochianDegradationSecondsExtending = 5.0d;
 
         /// <summary>
+        /// エノキアンOFF後にエノキアンの更新を受付ける猶予期間（ms）
+        /// </summary>
+        public const int GraceToUpdateEnochian = 200;
+
+        /// <summary>
         /// エノキアン効果中か？
         /// </summary>
         private bool inEnochian;
@@ -60,6 +65,16 @@
         private string playerName;
 
         /// <summary>
+        /// エノキアンの更新猶予期間
+        /// </summary>
+        private bool inGraceToUpdate;
+
+        /// <summary>
+        /// 猶予期間中に更新されたか？
+        /// </summary>
+        private bool updatedDuringGrace;
+
+        /// <summary>
         /// エノキアンタイマーを開始する
         /// </summary>
         private void StartEnochianTimer()
@@ -68,6 +83,8 @@
             this.playerName = string.Empty;
             this.logQueue.Clear();
             this.enochianTimerStop = false;
+            this.inGraceToUpdate = false;
+            this.updatedDuringGrace = false;
             this.enochianTimerTask = new Task(this.AnalyseLogLinesToEnochian);
             this.enochianTimerTask.Start();
         }
@@ -120,24 +137,37 @@
                     break;
                 }
 
-                var log = string.Empty;
-
-                while (true)
+                if (string.IsNullOrWhiteSpace(this.playerName))
                 {
-                    lock (this.logQueue)
+                    // プレイヤ情報を取得する
+                    var player = FF14PluginHelper.GetCombatantPlayer();
+                    if (player != null)
                     {
-                        if (this.logQueue.Count > 0)
-                        {
-                            log = this.logQueue.Dequeue();
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        this.playerName = player.Name;
                     }
+                }
 
-                    this.AnalyzeLogLineToEnochian(log);
-                    Thread.Sleep(1);
+                if (!string.IsNullOrWhiteSpace(this.playerName))
+                {
+                    var log = string.Empty;
+
+                    while (true)
+                    {
+                        lock (this.logQueue)
+                        {
+                            if (this.logQueue.Count > 0)
+                            {
+                                log = this.logQueue.Dequeue();
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        this.AnalyzeLogLineToEnochian(log);
+                        Thread.Sleep(1);
+                    }
                 }
 
                 Thread.Sleep(Settings.Default.ParameterRefreshRate / 2);
@@ -156,8 +186,7 @@
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(this.playerName) ||
-                log.Contains("Welcome to"))
+            if (log.Contains("Welcome to"))
             {
                 // プレイヤ情報を取得する
                 var player = FF14PluginHelper.GetCombatantPlayer();
@@ -165,6 +194,16 @@
                 {
                     this.playerName = player.Name;
                 }
+            }
+
+            if (string.IsNullOrWhiteSpace(this.playerName))
+            {
+                return;
+            }
+
+            if (!log.Contains(this.playerName))
+            {
+                return;
             }
 
             // 各種マッチング用の文字列を生成する
@@ -178,29 +217,48 @@
             var machingTextToUmbralIce3Off = this.playerName + "の「アンブラルブリザードIII」が切れた。";
             var machingTextToBlizzard4 = this.playerName + "の「ブリザジャ」";
 
-            if (!log.Contains(this.playerName))
-            {
-                return;
-            }
-
             // エノキアンON？
             if (log.EndsWith(machingTextToEnochianOn))
             {
                 this.inEnochian = true;
                 this.updateEnchianCount = 0;
-                this.UpdateEnochian();
+                this.UpdateEnochian(log);
 
-                Trace.WriteLine("Enochian On.");
+                Trace.WriteLine("Enochian On. -> " + log);
                 return;
             }
 
             // エノキアンOFF？
             if (log.Contains(machingTextToEnochianOff))
             {
-                this.inEnochian = false;
-                this.updateEnchianCount = 0;
+                // エノキアンの更新猶予期間をセットする
+                this.inGraceToUpdate = true;
+                this.updatedDuringGrace = false;
 
-                Trace.WriteLine("Enochian Off.");
+                Task.Run(() =>
+                {
+                    Thread.Sleep(GraceToUpdateEnochian);
+
+                    // 更新猶予期間中？
+                    if (this.inGraceToUpdate)
+                    {
+                        // 期間中に更新されていない？
+                        if (!this.updatedDuringGrace)
+                        {
+                            this.inEnochian = false;
+                            this.updateEnchianCount = 0;
+                            Trace.WriteLine("Enochian Off. -> " + log);
+                        }
+
+                        this.inGraceToUpdate = false;
+                        return;
+                    }
+
+                    this.inEnochian = false;
+                    this.updateEnchianCount = 0;
+                    Trace.WriteLine("Enochian Off. -> " + log);
+                });
+
                 return;
             }
 
@@ -211,7 +269,7 @@
             {
                 this.inUmbralIce = true;
 
-                Trace.WriteLine("Umbral Ice On.");
+                Trace.WriteLine("Umbral Ice On. -> " + log);
                 return;
             }
 
@@ -220,9 +278,14 @@
                 log.Contains(machingTextToUmbralIce2Off) ||
                 log.Contains(machingTextToUmbralIce3Off))
             {
-                this.inUmbralIce = false;
+                Task.Run(() =>
+                {
+                    Thread.Sleep(GraceToUpdateEnochian);
 
-                Trace.WriteLine("Umbral Ice Off.");
+                    this.inUmbralIce = false;
+                    Trace.WriteLine("Umbral Ice Off. -> " + log);
+                });
+
                 return;
             }
 
@@ -232,8 +295,14 @@
                 if (this.inEnochian &&
                     this.inUmbralIce)
                 {
+                    // 猶予期間中？
+                    if (this.inGraceToUpdate)
+                    {
+                        this.updatedDuringGrace = true;
+                    }
+
                     this.updateEnchianCount++;
-                    this.UpdateEnochian();
+                    this.UpdateEnochian(log);
                 }
             }
         }
@@ -241,7 +310,8 @@
         /// <summary>
         /// エノキアンの効果時間を更新する
         /// </summary>
-        private void UpdateEnochian()
+        private void UpdateEnochian(
+            string log)
         {
             var vm = EnochianTimerWindow.Default.ViewModel;
 
@@ -250,7 +320,7 @@
             var duration = EnochianDuration - (EnochianDegradationSecondsExtending * this.updateEnchianCount);
             vm.EndScheduledDateTime = vm.StartDateTime.AddSeconds(duration);
 
-            Trace.WriteLine("Enochian Update, +" + duration.ToString() + "s.");
+            Trace.WriteLine("Enochian Update, +" + duration.ToString() + "s. -> " + log);
         }
     }
 }
