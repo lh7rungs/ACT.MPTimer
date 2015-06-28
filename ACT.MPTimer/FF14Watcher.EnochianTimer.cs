@@ -158,7 +158,7 @@
             }
 
             // 各種マッチング用の文字列を生成する
-            var machingTextToEnochianOn = player.Name + "に「エノキアン」の効果。";
+            var machingTextToEnochianOn = player.Name + "の「エノキアン」";
             var machingTextToEnochianOff = player.Name + "の「エノキアン」が切れた。";
             var machingTextToUmbralIce1On = player.Name + "に「アンブラルブリザード」の効果。";
             var machingTextToUmbralIce2On = player.Name + "に「アンブラルブリザードII」の効果。";
@@ -174,7 +174,7 @@
             }
 
             // エノキアンON？
-            if (log.Contains(machingTextToEnochianOn))
+            if (log.EndsWith(machingTextToEnochianOn))
             {
                 this.inEnochian = true;
                 this.updateEnchianCount = 0;
