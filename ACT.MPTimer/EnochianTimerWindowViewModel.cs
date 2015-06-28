@@ -36,11 +36,7 @@
         public EnochianTimerWindowViewModel()
         {
             this.ReloadSettings();
-
-#if DEBUG
-            this.visible = true;
-            this.inCombat = true;
-#endif
+            this.InCombat = true;
         }
 
         public string Label
@@ -290,15 +286,6 @@
                 {
                     this.Visible = false;
                     return;
-                }
-                else
-                {
-#if DEBUG
-                    duration = FF14Watcher.EnochianDuration;
-                    durationRate = duration / FF14Watcher.EnochianDuration;
-                    durationRemain = 15.0d;
-                    durationRemainRate = 0.5d;
-#endif
                 }
             }
 
