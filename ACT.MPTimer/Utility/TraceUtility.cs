@@ -90,11 +90,8 @@
 
                     if (this.logBuffer.Count >= 64)
                     {
-                        foreach (var text in this.logBuffer)
-                        {
-                            File.AppendAllText(this.logFile, text);
-                        }
-
+                        var toWrite = string.Join(string.Empty, this.logBuffer.ToArray());
+                        File.AppendAllText(this.logFile, toWrite);
                         this.logBuffer.Clear();
                     }
                 }
@@ -107,6 +104,24 @@
         public override void WriteLine(string message)
         {
             this.Write(message + Environment.NewLine);
+        }
+
+        public override void Flush()
+        {
+            try
+            {
+                base.Flush();
+
+                lock (this.logBuffer)
+                {
+                    var toWrite = string.Join(string.Empty, this.logBuffer.ToArray());
+                    File.AppendAllText(this.logFile, toWrite);
+                    this.logBuffer.Clear();
+                }
+            }
+            catch
+            {
+            }
         }
     }
 }

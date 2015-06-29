@@ -132,45 +132,57 @@
         {
             while (true)
             {
-                if (this.enochianTimerStop)
+                try
                 {
-                    break;
-                }
-
-                if (string.IsNullOrWhiteSpace(this.playerName))
-                {
-                    // プレイヤ情報を取得する
-                    var player = FF14PluginHelper.GetCombatantPlayer();
-                    if (player != null)
+                    if (this.enochianTimerStop)
                     {
-                        this.playerName = player.Name;
+                        break;
                     }
-                }
 
-                if (!string.IsNullOrWhiteSpace(this.playerName))
-                {
-                    var log = string.Empty;
-
-                    while (true)
+                    if (string.IsNullOrWhiteSpace(this.playerName))
                     {
-                        lock (this.logQueue)
+                        // プレイヤ情報を取得する
+                        var player = FF14PluginHelper.GetCombatantPlayer();
+                        if (player != null)
                         {
-                            if (this.logQueue.Count > 0)
-                            {
-                                log = this.logQueue.Dequeue();
-                            }
-                            else
-                            {
-                                break;
-                            }
+                            this.playerName = player.Name;
+                            Trace.WriteLine("Player name is " + this.playerName);
                         }
-
-                        this.AnalyzeLogLineToEnochian(log);
-                        Thread.Sleep(1);
                     }
-                }
 
-                Thread.Sleep(Settings.Default.ParameterRefreshRate / 2);
+                    if (!string.IsNullOrWhiteSpace(this.playerName))
+                    {
+                        var log = string.Empty;
+
+                        while (true)
+                        {
+                            lock (this.logQueue)
+                            {
+                                if (this.logQueue.Count > 0)
+                                {
+                                    log = this.logQueue.Dequeue();
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+
+                            this.AnalyzeLogLineToEnochian(log);
+                            Thread.Sleep(1);
+                        }
+                    }
+
+                    Thread.Sleep(Settings.Default.ParameterRefreshRate / 2);
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine(
+                        "Enochian Timer Error!" + Environment.NewLine +
+                        ex.ToString());
+
+                    Thread.Sleep(5 * 1000);
+                }
             }
         }
 
@@ -193,16 +205,13 @@
                 if (player != null)
                 {
                     this.playerName = player.Name;
+                    Trace.WriteLine("Player name is " + this.playerName);
                 }
             }
 
             if (string.IsNullOrWhiteSpace(this.playerName))
             {
-                return;
-            }
-
-            if (!log.Contains(this.playerName))
-            {
+                Trace.WriteLine("Player name is empty.");
                 return;
             }
 
