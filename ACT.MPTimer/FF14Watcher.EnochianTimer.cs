@@ -27,7 +27,7 @@
         /// <summary>
         /// エノキアンOFF後にエノキアンの更新を受付ける猶予期間（ms）
         /// </summary>
-        public const int GraceToUpdateEnochian = 200;
+        public const int GraceToUpdateEnochian = 1000;
 
         /// <summary>
         /// エノキアン効果中か？
@@ -237,7 +237,7 @@
 
                 Task.Run(() =>
                 {
-                    Thread.Sleep(GraceToUpdateEnochian);
+                    Thread.Sleep(GraceToUpdateEnochian + Settings.Default.ParameterRefreshRate);
 
                     // 更新猶予期間中？
                     if (this.inGraceToUpdate)
@@ -280,7 +280,7 @@
             {
                 Task.Run(() =>
                 {
-                    Thread.Sleep(GraceToUpdateEnochian);
+                    Thread.Sleep(GraceToUpdateEnochian + Settings.Default.ParameterRefreshRate);
 
                     this.inUmbralIce = false;
                     Trace.WriteLine("Umbral Ice Off. -> " + log);
