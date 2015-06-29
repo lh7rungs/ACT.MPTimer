@@ -68,6 +68,10 @@
                         pluginScancombat = fi.GetValue(pluginConfig);
                     }
                 }
+                else
+                {
+                    Trace.WriteLine("Error!, FFXIV_ACT_Plugin.dll not found.");
+                }
             }
         }
 

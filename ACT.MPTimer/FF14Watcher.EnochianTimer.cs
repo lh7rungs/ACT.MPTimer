@@ -144,6 +144,7 @@
                     if (player != null)
                     {
                         this.playerName = player.Name;
+                        Trace.WriteLine("Player name is " + this.playerName);
                     }
                 }
 
@@ -193,16 +194,13 @@
                 if (player != null)
                 {
                     this.playerName = player.Name;
+                    Trace.WriteLine("Player name is " + this.playerName);
                 }
             }
 
             if (string.IsNullOrWhiteSpace(this.playerName))
             {
-                return;
-            }
-
-            if (!log.Contains(this.playerName))
-            {
+                Trace.WriteLine("Player name is empty.");
                 return;
             }
 
