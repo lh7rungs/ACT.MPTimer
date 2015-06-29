@@ -130,6 +130,7 @@
                 var item = (dynamic)list[0];
                 var combatant = new Combatant();
 
+                combatant.Name = (string)item.Name;
                 combatant.ID = (uint)item.ID;
                 combatant.Job = (int)item.Job;
                 combatant.CurrentMP = (int)item.CurrentMP;
@@ -175,6 +176,7 @@
 
                 var combatant = new Combatant();
 
+                combatant.Name = (string)item.Name;
                 combatant.ID = (uint)item.ID;
                 combatant.Job = (int)item.Job;
                 combatant.CurrentMP = (int)item.CurrentMP;
