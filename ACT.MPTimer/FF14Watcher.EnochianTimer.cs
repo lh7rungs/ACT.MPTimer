@@ -75,12 +75,18 @@
         private bool updatedDuringGrace;
 
         /// <summary>
+        /// 最後のエノキアンの残り時間イベント
+        /// </summary>
+        private string lastRemainingTimeOfEnochian;
+
+        /// <summary>
         /// エノキアンタイマーを開始する
         /// </summary>
         private void StartEnochianTimer()
         {
             ActGlobals.oFormActMain.OnLogLineRead += this.OnLoglineRead;
             this.playerName = string.Empty;
+            this.lastRemainingTimeOfEnochian = string.Empty;
             this.logQueue.Clear();
             this.enochianTimerStop = false;
             this.inGraceToUpdate = false;
@@ -173,6 +179,22 @@
                         }
                     }
 
+                    // エノキアンの残り秒数をログとして発生させる
+                    var vm = EnochianTimerWindow.Default.ViewModel;
+                    if (vm.EndScheduledDateTime >= DateTime.MinValue)
+                    {
+                        var remainSeconds = (vm.EndScheduledDateTime - DateTime.Now).TotalSeconds;
+                        if (remainSeconds >= 0)
+                        {
+                            var notice = "Remaining time of Enochian. " + remainSeconds.ToString("N0");
+                            if (this.lastRemainingTimeOfEnochian != notice)
+                            {
+                                this.lastRemainingTimeOfEnochian = notice;
+                                ActGlobals.oFormActMain.ParseRawLogLine(false, DateTime.Now, notice);
+                            }
+                        }
+                    }
+
                     Thread.Sleep(Settings.Default.ParameterRefreshRate / 2);
                 }
                 catch (Exception ex)
@@ -232,6 +254,7 @@
                 this.inEnochian = true;
                 this.updateEnchianCount = 0;
                 this.UpdateEnochian(log);
+                this.lastRemainingTimeOfEnochian = string.Empty;
 
                 Trace.WriteLine("Enochian On. -> " + log);
                 return;
@@ -328,6 +351,9 @@
 
             var duration = EnochianDuration - (EnochianDegradationSecondsExtending * this.updateEnchianCount);
             vm.EndScheduledDateTime = vm.StartDateTime.AddSeconds(duration);
+
+            // ACTにログを発生させる
+            ActGlobals.oFormActMain.ParseRawLogLine(false, DateTime.Now, "Updated Enochian.");
 
             Trace.WriteLine("Enochian Update, +" + duration.ToString() + "s. -> " + log);
         }
