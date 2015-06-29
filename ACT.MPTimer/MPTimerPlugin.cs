@@ -97,6 +97,7 @@
             finally
             {
                 Trace.WriteLine("DeInitPlugin end.");
+                Trace.Flush();
             }
         }
 
