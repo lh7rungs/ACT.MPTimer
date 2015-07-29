@@ -28,6 +28,11 @@
         public DateTime LastMPFullDateTime { get; private set; }
 
         /// <summary>
+        /// 最後に取得したプレイヤー情報
+        /// </summary>
+        public Combatant LastPlayerInfo { get; private set; }
+
+        /// <summary>
         /// 直前のMP
         /// </summary>
         private int PreviousMP { get; set; }
@@ -37,7 +42,31 @@
         /// </summary>
         private Dictionary<int, int[]> MPRecoveryAmounts = new Dictionary<int, int[]>();
 
+        /// <summary>
+        /// 最後にログを出力した日時
+        /// </summary>
         private DateTime lastLoggingDateTime;
+
+        /// <summary>
+        /// ジョブフィルタによるMPタイマー及びエノキアンタイマーの有効性
+        /// </summary>
+        public bool EnabledByJobFilter
+        {
+            get
+            {
+                if (this.LastPlayerInfo == null)
+                {
+                    return false;
+                }
+
+                if (Settings.Default.TargetJobId == 0)
+                {
+                    return true;
+                }
+
+                return this.LastPlayerInfo.Job == Settings.Default.TargetJobId;
+            }
+        }
 
         /// <summary>
         /// MP回復スパンを監視する
@@ -52,19 +81,24 @@
                 vm.Visible = false;
                 return;
             }
-
-            // ジョブ指定？
-            if (Settings.Default.TargetJobId != 0)
-            {
-                vm.Visible = player.Job == Settings.Default.TargetJobId;
-                if (!vm.Visible)
-                {
-                    return;
-                }
-            }
             else
             {
-                vm.Visible = true;
+                // プレイヤー情報を保存する
+                this.LastPlayerInfo = player;
+            }
+
+            // MPTimerが無効？
+            if (!Settings.Default.EnabledMPTimer)
+            {
+                vm.Visible = false;
+                return;
+            }
+
+            // ジョブ指定を設定する
+            vm.Visible = this.EnabledByJobFilter;
+            if (!vm.Visible)
+            {
+                return;
             }
 
             // 戦闘中のみ稼働させる？

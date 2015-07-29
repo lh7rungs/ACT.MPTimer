@@ -195,6 +195,9 @@
             this.EnochianBarShiftOutlineColorButton.BackColor = Settings.Default.EnochianProgressBarOutlineShiftColor;
 
             this.EnochianLabelTextBox.Text = Settings.Default.EnochianLabel;
+
+            this.EnabledMPTimerCheckBox.Checked = Settings.Default.EnabledMPTimer;
+            this.EnabledEnochianTimerCheckBox.Checked = Settings.Default.EnabledEnochianTimer;
         }
 
         /// <summary>
@@ -234,6 +237,9 @@
             Settings.Default.EnochianProgressBarOutlineShiftColor = this.EnochianBarShiftOutlineColorButton.BackColor;
 
             Settings.Default.EnochianLabel = this.EnochianLabelTextBox.Text;
+
+            Settings.Default.EnabledMPTimer = this.EnabledMPTimerCheckBox.Checked;
+            Settings.Default.EnabledEnochianTimer = this.EnabledEnochianTimerCheckBox.Checked;
 
             Settings.Default.Save();
         }
