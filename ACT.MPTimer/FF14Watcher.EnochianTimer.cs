@@ -125,9 +125,15 @@
                 return;
             }
 
-            lock (this.logQueue)
+            // エノキアンタイマーが有効ならば・・・
+            if (Settings.Default.EnabledEnochianTimer &&
+                this.EnabledByJobFilter)
             {
-                this.logQueue.Enqueue(logInfo.logLine);
+                // ログをキューに貯める
+                lock (this.logQueue)
+                {
+                    this.logQueue.Enqueue(logInfo.logLine);
+                }
             }
         }
 
@@ -145,17 +151,34 @@
                         break;
                     }
 
+                    // エノキアンタイマーViewModelを参照する
+                    var vm = EnochianTimerWindow.Default.ViewModel;
+
+                    // プレイヤー名を保存する
                     if (string.IsNullOrWhiteSpace(this.playerName))
                     {
-                        // プレイヤ情報を取得する
-                        var player = FF14PluginHelper.GetCombatantPlayer();
-                        if (player != null)
+                        if (this.LastPlayerInfo != null)
                         {
-                            this.playerName = player.Name;
+                            this.playerName = this.LastPlayerInfo.Name;
                             Trace.WriteLine("Player name is " + this.playerName);
                         }
                     }
 
+                    // エノキアンタイマーが無効？
+                    if (!Settings.Default.EnabledEnochianTimer)
+                    {
+                        vm.Visible = false;
+                        continue;
+                    }
+
+                    // ジョブフィルタを設定する
+                    if (!this.EnabledByJobFilter)
+                    {
+                        vm.Visible = false;
+                        continue;
+                    }
+
+                    // ログを解析する
                     if (!string.IsNullOrWhiteSpace(this.playerName))
                     {
                         var log = string.Empty;
@@ -180,7 +203,6 @@
                     }
 
                     // エノキアンの残り秒数をログとして発生させる
-                    var vm = EnochianTimerWindow.Default.ViewModel;
                     if (vm.EndScheduledDateTime >= DateTime.MinValue)
                     {
                         var remainSeconds = (vm.EndScheduledDateTime - DateTime.Now).TotalSeconds;
@@ -238,19 +260,19 @@
             }
 
             // 各種マッチング用の文字列を生成する
-            var machingTextToEnochianOn = new string[] 
+            var machingTextToEnochianOn = new string[]
             {
                 this.playerName + "の「エノキアン」",
                 "You use Enochian.",
             };
 
-            var machingTextToEnochianOff = new string[] 
+            var machingTextToEnochianOff = new string[]
             {
                 this.playerName + "の「エノキアン」が切れた。",
                 "You lose the effect of Enochian.",
             };
 
-            var machingTextToUmbralIceOn = new string[] 
+            var machingTextToUmbralIceOn = new string[]
             {
                 this.playerName + "に「アンブラルブリザード」の効果。",
                 this.playerName + "に「アンブラルブリザードII」の効果。",
@@ -260,7 +282,7 @@
                 "You gain the effect of Umbral Ice III.",
             };
 
-            var machingTextToUmbralIceOff = new string[] 
+            var machingTextToUmbralIceOff = new string[]
             {
                 this.playerName + "の「アンブラルブリザード」が切れた。",
                 this.playerName + "の「アンブラルブリザードII」が切れた。",
@@ -270,7 +292,7 @@
                 "You lose the effect of Umbral Ice III.",
             };
 
-            var machingTextToBlizzard4 = new string[] 
+            var machingTextToBlizzard4 = new string[]
             {
                 this.playerName + "の「ブリザジャ」",
                 "You cast Blizzard IV.",
