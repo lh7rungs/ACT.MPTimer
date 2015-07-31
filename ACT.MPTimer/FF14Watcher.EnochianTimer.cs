@@ -264,12 +264,14 @@
             {
                 this.playerName + "の「エノキアン」",
                 "You use Enochian.",
+                "Vous utilisez Énochien.",
             };
 
             var machingTextToEnochianOff = new string[]
             {
                 this.playerName + "の「エノキアン」が切れた。",
                 "You lose the effect of Enochian.",
+                "Vous perdez l'effet Énochien.",
             };
 
             var machingTextToUmbralIceOn = new string[]
@@ -280,6 +282,9 @@
                 "You gain the effect of Umbral Ice.",
                 "You gain the effect of Umbral Ice II.",
                 "You gain the effect of Umbral Ice III.",
+                "Vous bénéficiez de l'effet Glace ombrale.",
+                "Vous bénéficiez de l'effet Glace ombrale II.",
+                "Vous bénéficiez de l'effet Glace ombrale III.",
             };
 
             var machingTextToUmbralIceOff = new string[]
@@ -290,12 +295,16 @@
                 "You lose the effect of Umbral Ice.",
                 "You lose the effect of Umbral Ice II.",
                 "You lose the effect of Umbral Ice III.",
+                "Vous perdez l'effet Glace ombrale.",
+                "Vous perdez l'effet Glace ombrale II.",
+                "Vous perdez l'effet Glace ombrale III.",
             };
 
             var machingTextToBlizzard4 = new string[]
             {
                 this.playerName + "の「ブリザジャ」",
                 "You cast Blizzard IV.",
+                "Vous lancez Giga Glace.",
             };
 
             // エノキアンON？
