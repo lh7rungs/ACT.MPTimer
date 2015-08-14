@@ -48,6 +48,19 @@
         private DateTime lastLoggingDateTime;
 
         /// <summary>
+        /// ジョブフィルタによる対象ジョブID
+        /// </summary>
+        private int targetJobId = -1;
+
+        /// <summary>
+        /// 対象ジョブIDを更新する
+        /// </summary>
+        public void UpdateTargetJobId()
+        {
+            this.targetJobId = Settings.Default.TargetJobId;
+        }
+
+        /// <summary>
         /// ジョブフィルタによるMPタイマー及びエノキアンタイマーの有効性
         /// </summary>
         public bool EnabledByJobFilter
@@ -64,7 +77,12 @@
                     return true;
                 }
 
-                return this.LastPlayerInfo.Job == Settings.Default.TargetJobId;
+                if (this.targetJobId < 0)
+                {
+                    this.UpdateTargetJobId();
+                }
+
+                return this.LastPlayerInfo.Job == this.targetJobId;
             }
         }
 

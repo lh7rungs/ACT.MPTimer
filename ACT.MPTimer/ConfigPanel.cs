@@ -64,6 +64,8 @@
 
                     this.SaveSettings();
 
+                    FF14Watcher.Default.UpdateTargetJobId();
+
                     MPTimerWindow.Reload();
                     MPTimerWindow.Default.Show();
                     EnochianTimerWindow.Reload();
@@ -92,6 +94,8 @@
                     EnochianTimerWindow.Default.Left = Settings.Default.EnochianOverlayLeft;
 
                     this.LoadSettings();
+
+                    FF14Watcher.Default.UpdateTargetJobId();
 
                     MPTimerWindow.Reload();
                     MPTimerWindow.Default.Show();
