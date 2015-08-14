@@ -168,6 +168,7 @@
                     if (!Settings.Default.EnabledEnochianTimer)
                     {
                         vm.Visible = false;
+                        Thread.Sleep(Settings.Default.ParameterRefreshRate);
                         continue;
                     }
 
@@ -175,6 +176,7 @@
                     if (!this.EnabledByJobFilter)
                     {
                         vm.Visible = false;
+                        Thread.Sleep(Settings.Default.ParameterRefreshRate);
                         continue;
                     }
 
