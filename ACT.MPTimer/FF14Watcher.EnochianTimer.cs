@@ -27,7 +27,7 @@
         /// <summary>
         /// エノキアンOFF後にエノキアンの更新を受付ける猶予期間（ms）
         /// </summary>
-        public const int GraceToUpdateEnochian = 1000;
+        public const int GraceToUpdateEnochian = 1700;
 
         /// <summary>
         /// エノキアン効果中か？
