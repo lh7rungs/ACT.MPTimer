@@ -12,7 +12,7 @@ ACT.MPTimer
 **[.NET Framework 4.6](https://www.microsoft.com/ja-jp/download/details.aspx?id=48130)** をインストールします。  
 ※ MPTimer の動作には. NET Framework 4.6 以降が必要です。  
   
-2) インストール
+2) インストール  
 ACT.MPTimer.dll  
 をACTのインストールディレクトリにコピーします  
 その後、プラグインとしてACT.MPTimer.dllを追加してください  
