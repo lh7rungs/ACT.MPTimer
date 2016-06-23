@@ -261,45 +261,21 @@
                 return;
             }
 
-            // イニシャル版のプレイヤー名を生成する
-            var names = this.playerName.Split(' ');
-            var firstName = names.Length > 0 ? names[0].Trim() : string.Empty;
-            var familyName = names.Length > 1 ? names[1].Trim() : string.Empty;
-
-            var playerNameSaL = 
-                firstName.Substring(0, 1) + "." + 
-                " " + 
-                familyName;
-
-            var playerNameLaS = 
-                firstName + 
-                " " + 
-                familyName.Substring(0, 1) + ".";
-
-            var playerNameSaS = 
-                firstName.Substring(0, 1) + "." + 
-                " " + 
-                familyName.Substring(0, 1) + ".";
-
             // 各種マッチング用の文字列を生成する
             var machingTextToEnochianOn = new string[]
             {
                 this.playerName + "の「エノキアン」",
-                playerNameSaL + "の「エノキアン」",
-                playerNameLaS + "の「エノキアン」",
-                playerNameSaS + "の「エノキアン」",
                 "You use Enochian.",
                 "Vous utilisez Énochien.",
+                this.playerName + "이 천사의 언어를 시전했습니다.",
             };
 
             var machingTextToEnochianOff = new string[]
             {
                 this.playerName + "の「エノキアン」が切れた。",
-                playerNameSaL + "の「エノキアン」が切れた。",
-                playerNameLaS + "の「エノキアン」が切れた。",
-                playerNameSaS + "の「エノキアン」が切れた。",
                 "You lose the effect of Enochian.",
                 "Vous perdez l'effet Énochien.",
+                this.playerName + "의 천사의 언어 효과가 사라졌습니다.",
             };
 
             var machingTextToUmbralIceOn = new string[]
@@ -307,21 +283,15 @@
                 this.playerName + "に「アンブラルブリザード」の効果。",
                 this.playerName + "に「アンブラルブリザードII」の効果。",
                 this.playerName + "に「アンブラルブリザードIII」の効果。",
-                playerNameSaL + "に「アンブラルブリザード」の効果。",
-                playerNameSaL + "に「アンブラルブリザードII」の効果。",
-                playerNameSaL + "に「アンブラルブリザードIII」の効果。",
-                playerNameLaS + "に「アンブラルブリザード」の効果。",
-                playerNameLaS + "に「アンブラルブリザードII」の効果。",
-                playerNameLaS + "に「アンブラルブリザードIII」の効果。",
-                playerNameSaS + "に「アンブラルブリザード」の効果。",
-                playerNameSaS + "に「アンブラルブリザードII」の効果。",
-                playerNameSaS + "に「アンブラルブリザードIII」の効果。",
                 "You gain the effect of Umbral Ice.",
                 "You gain the effect of Umbral Ice II.",
                 "You gain the effect of Umbral Ice III.",
                 "Vous bénéficiez de l'effet Glace ombrale.",
                 "Vous bénéficiez de l'effet Glace ombrale II.",
                 "Vous bénéficiez de l'effet Glace ombrale III.",
+                this.playerName + "이 저승의 냉기 1 효과를 받았습니다.",
+                this.playerName + "이 저승의 냉기 2 효과를 받았습니다.",
+                this.playerName + "이 저승의 냉기 3 효과를 받았습니다.",
             };
 
             var machingTextToUmbralIceOff = new string[]
@@ -329,31 +299,23 @@
                 this.playerName + "の「アンブラルブリザード」が切れた。",
                 this.playerName + "の「アンブラルブリザードII」が切れた。",
                 this.playerName + "の「アンブラルブリザードIII」が切れた。",
-                playerNameSaL + "の「アンブラルブリザード」が切れた。",
-                playerNameSaL + "の「アンブラルブリザードII」が切れた。",
-                playerNameSaL + "の「アンブラルブリザードIII」が切れた。",
-                playerNameLaS + "の「アンブラルブリザード」が切れた。",
-                playerNameLaS + "の「アンブラルブリザードII」が切れた。",
-                playerNameLaS + "の「アンブラルブリザードIII」が切れた。",
-                playerNameSaS + "の「アンブラルブリザード」が切れた。",
-                playerNameSaS + "の「アンブラルブリザードII」が切れた。",
-                playerNameSaS + "の「アンブラルブリザードIII」が切れた。",
                 "You lose the effect of Umbral Ice.",
                 "You lose the effect of Umbral Ice II.",
                 "You lose the effect of Umbral Ice III.",
                 "Vous perdez l'effet Glace ombrale.",
                 "Vous perdez l'effet Glace ombrale II.",
                 "Vous perdez l'effet Glace ombrale III.",
+                this.playerName + "의 저승의 냉기 1 효과가 사라졌습니다.",
+                this.playerName + "의 저승의 냉기 2 효과가 사라졌습니다.",
+                this.playerName + "의 저승의 냉기 3 효과가 사라졌습니다.",
             };
 
             var machingTextToBlizzard4 = new string[]
             {
                 this.playerName + "の「ブリザジャ」",
-                playerNameSaL + "の「ブリザジャ」",
-                playerNameLaS + "の「ブリザジャ」",
-                playerNameSaS + "の「ブリザジャ」",
                 "You cast Blizzard IV.",
                 "Vous lancez Giga Glace.",
+                this.playerName + "이 블리자쟈를 시전했습니다.",
             };
 
             // エノキアンON？
