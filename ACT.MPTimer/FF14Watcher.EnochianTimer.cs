@@ -268,6 +268,7 @@
                 "You use Enochian.",
                 "Vous utilisez Énochien.",
                 this.playerName + "이 천사의 언어를 시전했습니다.",
+                this.playerName + "가 천사의 언어를 시전했습니다.",
             };
 
             var machingTextToEnochianOff = new string[]
@@ -290,8 +291,11 @@
                 "Vous bénéficiez de l'effet Glace ombrale II.",
                 "Vous bénéficiez de l'effet Glace ombrale III.",
                 this.playerName + "이 저승의 냉기 1 효과를 받았습니다.",
+                this.playerName + "가 저승의 냉기 1 효과를 받았습니다.",
                 this.playerName + "이 저승의 냉기 2 효과를 받았습니다.",
+                this.playerName + "가 저승의 냉기 2 효과를 받았습니다.",
                 this.playerName + "이 저승의 냉기 3 효과를 받았습니다.",
+                this.playerName + "가 저승의 냉기 3 효과를 받았습니다.",
             };
 
             var machingTextToUmbralIceOff = new string[]
@@ -316,6 +320,7 @@
                 "You cast Blizzard IV.",
                 "Vous lancez Giga Glace.",
                 this.playerName + "이 블리자쟈를 시전했습니다.",
+                this.playerName + "가 블리자쟈를 시전했습니다.",
             };
 
             // エノキアンON？
